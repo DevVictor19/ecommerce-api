@@ -19,7 +19,7 @@ public class User {
     @Id
     private String id;
 
-    @Indexed
+    @Indexed(unique = true)
     private String username;
     private String email;
     private String password;
