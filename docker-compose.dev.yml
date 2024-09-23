@@ -1,0 +1,21 @@
+services:
+  db:
+    image: mongo
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
+    networks:
+      - ecommerce-api
+    volumes:
+      - ecommerce-mongo:/data/db
+    ports:
+      - ${DB_PORT}:27017
+
+
+networks:
+  ecommerce-api:
+    driver: bridge
+
+volumes:
+  ecommerce-mongo:

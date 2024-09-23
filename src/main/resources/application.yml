@@ -1,0 +1,8 @@
+spring:application.name: ecommerce-api
+
+database:
+  host: ${DB_HOST}
+  name: ${DB_NAME}
+  user: ${DB_USER}
+  pwd: ${DB_PASSWORD}
+  port: ${DB_PORT}
