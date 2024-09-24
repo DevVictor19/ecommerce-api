@@ -1,38 +1,33 @@
 package com.devvictor.ecommerce_api.infra.config;
 
 import com.devvictor.ecommerce_api.application.providers.EnvConfigProvider;
-import com.mongodb.MongoClientSettings.Builder;
-import com.mongodb.MongoCredential;
-import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoClients;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.config.AbstractMongoClientConfiguration;
-
-import static java.util.Collections.singletonList;
+import org.springframework.data.mongodb.MongoDatabaseFactory;
+import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 
 @Configuration
-public class MongoAppConfig extends AbstractMongoClientConfiguration {
-    private final EnvConfigProvider env;
+public class MongoAppConfig {
+    private final EnvConfigProvider envConfigProvider;
 
-    public MongoAppConfig(EnvConfigProvider env) {
-        this.env = env;
+    public MongoAppConfig(EnvConfigProvider envConfigProvider) {
+        this.envConfigProvider = envConfigProvider;
     }
 
-    @Override
-    protected String getDatabaseName() {
-        return env.getDatabaseName();
+    private String getDatabaseUri() {
+        return "mongodb://"
+                +envConfigProvider.getDatabaseUser()+":"
+                +envConfigProvider.getDatabasePassword()+"@"
+                +envConfigProvider.getDatabaseHost()+":"
+                +envConfigProvider.getDatabasePort();
     }
 
-    @Override
-    protected void configureClientSettings(Builder builder) {
-
-        builder.credential(MongoCredential
-                        .createCredential(env.getDatabaseUser(), env.getDatabaseName(), env.getDatabasePassword()
-                        .toCharArray()))
-                .applyToClusterSettings(settings  -> {
-                    settings.hosts(singletonList(
-                            new ServerAddress(env.getDatabaseHost(), env.getDatabasePort()))
-                    );
-                });
-
+    @Bean
+    public MongoDatabaseFactory mongoDatabaseFactory() {
+        return new SimpleMongoClientDatabaseFactory(
+                MongoClients.create(getDatabaseUri()),
+                envConfigProvider.getDatabaseName()
+        );
     }
 }
