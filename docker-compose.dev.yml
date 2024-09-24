@@ -1,7 +1,22 @@
 services:
+  api:
+    container_name: ecommerce-api
+    restart: always
+    build:
+      context: .
+    env_file:
+      - .env
+    networks:
+      - ecommerce-api
+    ports:
+      - 8080:8080
+
   db:
     image: mongo
+    container_name: ecommerce-db
     restart: always
+    depends_on:
+      - api
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
       - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
