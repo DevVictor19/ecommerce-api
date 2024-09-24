@@ -6,4 +6,6 @@ public interface EnvConfigProvider {
     String getDatabaseUser();
     String getDatabasePassword();
     Integer getDatabasePort();
+    String getServerUrl();
+    String getServerSecret();
 }

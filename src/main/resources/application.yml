@@ -6,3 +6,7 @@ database:
   user: ${DB_USER}
   pwd: ${DB_PASSWORD}
   port: ${DB_PORT}
+
+server:
+  url: ${SERVER_URL}
+  secret: ${SERVER_SECRET}

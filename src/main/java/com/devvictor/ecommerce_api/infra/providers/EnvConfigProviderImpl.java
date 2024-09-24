@@ -21,6 +21,12 @@ public class EnvConfigProviderImpl implements EnvConfigProvider {
     @Value("${database.port}")
     private Integer databasePort;
 
+    @Value("${server.url}")
+    private String serverUrl;
+
+    @Value("${server.secret}")
+    private String serverSecret;
+
     @Override
     public String getDatabaseHost() {
         if (databaseHost == null) {
@@ -59,5 +65,21 @@ public class EnvConfigProviderImpl implements EnvConfigProvider {
             throw new RuntimeException("Database env variable port is null");
         }
         return databasePort;
+    }
+
+    @Override
+    public String getServerUrl() {
+        if (serverUrl == null) {
+            throw new RuntimeException("Server env variable url is null");
+        }
+        return serverUrl;
+    }
+
+    @Override
+    public String getServerSecret() {
+        if (serverSecret == null) {
+            throw new RuntimeException("Server env variable secret is null");
+        }
+        return serverSecret;
     }
 }
