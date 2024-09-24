@@ -1,4 +1,6 @@
-spring:application.name: ecommerce-api
+spring:
+  application:
+    name: ecommerce-api
 
 database:
   host: ${DB_HOST}
