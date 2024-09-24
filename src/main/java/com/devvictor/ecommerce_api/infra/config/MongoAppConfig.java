@@ -1,5 +1,6 @@
 package com.devvictor.ecommerce_api.infra.config;
 
+import com.devvictor.ecommerce_api.application.providers.EnvConfigProvider;
 import com.mongodb.MongoClientSettings.Builder;
 import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
@@ -10,9 +11,9 @@ import static java.util.Collections.singletonList;
 
 @Configuration
 public class MongoAppConfig extends AbstractMongoClientConfiguration {
-    private final EnvConfig env;
+    private final EnvConfigProvider env;
 
-    public MongoAppConfig(EnvConfig env) {
+    public MongoAppConfig(EnvConfigProvider env) {
         this.env = env;
     }
 

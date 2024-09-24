@@ -1,10 +1,11 @@
-package com.devvictor.ecommerce_api.infra.config;
+package com.devvictor.ecommerce_api.infra.providers;
 
+import com.devvictor.ecommerce_api.application.providers.EnvConfigProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnvConfig {
+public class EnvConfigProviderImpl implements EnvConfigProvider {
     @Value("${database.host}")
     private String databaseHost;
 
@@ -20,6 +21,7 @@ public class EnvConfig {
     @Value("${database.port}")
     private Integer databasePort;
 
+    @Override
     public String getDatabaseHost() {
         if (databaseHost == null) {
             throw new RuntimeException("Database env variable host is null");
@@ -27,6 +29,7 @@ public class EnvConfig {
         return databaseHost;
     }
 
+    @Override
     public String getDatabaseName() {
         if (databaseName == null) {
             throw new RuntimeException("Database env variable name is null");
@@ -34,6 +37,7 @@ public class EnvConfig {
         return databaseName;
     }
 
+    @Override
     public String getDatabaseUser() {
         if (databaseUser == null) {
             throw new RuntimeException("Database env variable user is null");
@@ -41,6 +45,7 @@ public class EnvConfig {
         return databaseUser;
     }
 
+    @Override
     public String getDatabasePassword() {
         if (databasePassword == null) {
             throw new RuntimeException("Database env variable pwd is null");
@@ -48,6 +53,7 @@ public class EnvConfig {
         return databasePassword;
     }
 
+    @Override
     public Integer getDatabasePort() {
         if (databasePort == null) {
             throw new RuntimeException("Database env variable port is null");
@@ -55,4 +61,3 @@ public class EnvConfig {
         return databasePort;
     }
 }
-
