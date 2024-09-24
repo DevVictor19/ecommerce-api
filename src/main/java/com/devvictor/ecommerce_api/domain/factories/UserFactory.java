@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class UserFactory {
-    static User create(String username, String email, String password) {
+    public static User create(String username, String email, String password) {
         return User.builder()
                 .id(UUID.randomUUID().toString())
                 .username(username)
