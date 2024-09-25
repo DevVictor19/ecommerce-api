@@ -6,18 +6,14 @@ import com.devvictor.ecommerce_api.application.providers.HashProvider;
 import com.devvictor.ecommerce_api.domain.entities.User;
 import com.devvictor.ecommerce_api.domain.factories.UserFactory;
 import com.devvictor.ecommerce_api.domain.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class SignupUserUseCase {
     private final UserRepository userRepository;
     private final HashProvider hashProvider;
-
-    public SignupUserUseCase(UserRepository userRepository,
-                             HashProvider hashProvider) {
-        this.userRepository = userRepository;
-        this.hashProvider = hashProvider;
-    }
 
     public void execute(SignupUserRequestDTO dto) {
        var existingUser = userRepository.findByEmail(dto.email());

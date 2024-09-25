@@ -6,6 +6,7 @@ import com.devvictor.ecommerce_api.application.dtos.SignupUserRequestDTO;
 import com.devvictor.ecommerce_api.application.use_cases.LoginUserUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.SignupUserUseCase;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,15 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
     private final SignupUserUseCase signupUserUseCase;
     private final LoginUserUseCase loginUserUseCase;
-
-    public AuthController(SignupUserUseCase signupUserUseCase,
-                          LoginUserUseCase loginUserUseCase) {
-        this.signupUserUseCase = signupUserUseCase;
-        this.loginUserUseCase = loginUserUseCase;
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<Void> signup(@Valid @RequestBody SignupUserRequestDTO dto) {

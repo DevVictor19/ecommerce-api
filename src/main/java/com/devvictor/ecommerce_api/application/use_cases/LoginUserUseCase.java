@@ -6,21 +6,15 @@ import com.devvictor.ecommerce_api.application.exceptions.UnauthorizedException;
 import com.devvictor.ecommerce_api.application.providers.HashProvider;
 import com.devvictor.ecommerce_api.application.providers.JwtProvider;
 import com.devvictor.ecommerce_api.domain.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class LoginUserUseCase {
     private final UserRepository userRepository;
     private final HashProvider hashProvider;
     private final JwtProvider jwtProvider;
-
-    public LoginUserUseCase(UserRepository userRepository,
-                            HashProvider hashProvider,
-                            JwtProvider jwtProvider) {
-        this.userRepository = userRepository;
-        this.hashProvider = hashProvider;
-        this.jwtProvider = jwtProvider;
-    }
 
     public LoginUserResponseDTO execute(LoginUserRequestDTO dto) {
         var existingUser = userRepository.findByEmail(dto.email());

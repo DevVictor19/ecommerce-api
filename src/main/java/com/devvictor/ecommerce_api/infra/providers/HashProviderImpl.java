@@ -1,16 +1,14 @@
 package com.devvictor.ecommerce_api.infra.providers;
 
 import com.devvictor.ecommerce_api.application.providers.HashProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class HashProviderImpl implements HashProvider {
     private final PasswordEncoder passwordEncoder;
-
-    public HashProviderImpl(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public String hash(String value) {
