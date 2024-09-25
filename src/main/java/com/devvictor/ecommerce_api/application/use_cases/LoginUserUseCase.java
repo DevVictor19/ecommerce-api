@@ -5,19 +5,19 @@ import com.devvictor.ecommerce_api.application.dtos.LoginUserResponseDTO;
 import com.devvictor.ecommerce_api.application.exceptions.UnauthorizedException;
 import com.devvictor.ecommerce_api.application.providers.HashProvider;
 import com.devvictor.ecommerce_api.application.providers.JwtProvider;
-import com.devvictor.ecommerce_api.domain.repositories.UserRepository;
+import com.devvictor.ecommerce_api.application.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class LoginUserUseCase {
-    private final UserRepository userRepository;
+    private final UserService userService;
     private final HashProvider hashProvider;
     private final JwtProvider jwtProvider;
 
     public LoginUserResponseDTO execute(LoginUserRequestDTO dto) {
-        var existingUser = userRepository.findByEmail(dto.email());
+        var existingUser = userService.findByEmail(dto.email());
 
         if (existingUser.isEmpty()) {
             throw new UnauthorizedException("Invalid email or password");
