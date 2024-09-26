@@ -1,6 +1,9 @@
 spring:
   application:
     name: ecommerce-api
+  data:
+    mongodb:
+      auto-index-creation: true
 
 database:
   host: ${DB_HOST}
