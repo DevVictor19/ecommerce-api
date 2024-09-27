@@ -4,6 +4,7 @@ import com.devvictor.ecommerce_api.domain.exceptions.InsufficientStockQuantityEx
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -21,7 +22,7 @@ public class Product {
     private String id;
     private double price;
 
-    @Indexed(unique = true)
+    @TextIndexed
     private String name;
     private String description;
 

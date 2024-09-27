@@ -4,6 +4,9 @@ import com.devvictor.ecommerce_api.domain.entities.Product;
 import com.devvictor.ecommerce_api.domain.factories.ProductFactory;
 import com.devvictor.ecommerce_api.domain.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,6 +15,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+
+    public Page<Product> findAll(String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        if (name == null || name.trim().isEmpty()) {
+            return productRepository.findAll(pageable);
+        } else {
+            return productRepository.findByNameContainingIgnoreCase(name, pageable);
+        }
+    }
 
     public void create( double price,
                         String name,
