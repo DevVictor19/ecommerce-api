@@ -29,6 +29,10 @@ public class ProductService {
         productRepository.insert(product);
     }
 
+    public void update(Product entity) {
+        productRepository.save(entity);
+    }
+
     public Optional<Product> findByName(String name) {
         return productRepository.findByName(name);
     }
