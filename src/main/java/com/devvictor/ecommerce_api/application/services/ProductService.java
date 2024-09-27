@@ -32,4 +32,12 @@ public class ProductService {
     public Optional<Product> findByName(String name) {
         return productRepository.findByName(name);
     }
+
+    public Optional<Product> findById(String id) {
+        return productRepository.findById(id);
+    }
+
+    public void delete(Product entity) {
+        productRepository.delete(entity);
+    }
 }
