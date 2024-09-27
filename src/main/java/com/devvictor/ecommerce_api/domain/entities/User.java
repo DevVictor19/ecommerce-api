@@ -20,9 +20,9 @@ import java.util.List;
 public class User {
     @Id
     private String id;
+    private String username;
 
     @Indexed(unique = true)
-    private String username;
     private String email;
     private String password;
     private List<Role> roles;

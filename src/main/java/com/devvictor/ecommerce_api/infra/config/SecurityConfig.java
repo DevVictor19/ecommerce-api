@@ -1,6 +1,7 @@
 package com.devvictor.ecommerce_api.infra.config;
 
 
+import com.devvictor.ecommerce_api.domain.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.POST, "/products").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, "/products/{id}").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, "/products/{id}").hasAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
