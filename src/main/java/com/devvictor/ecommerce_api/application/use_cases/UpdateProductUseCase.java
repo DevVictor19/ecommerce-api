@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases;
 
-import com.devvictor.ecommerce_api.application.dtos.UpdateProductRequestDTO;
+import com.devvictor.ecommerce_api.application.dtos.input.UpdateProductInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 public class UpdateProductUseCase {
     private final ProductService productService;
 
-    public void execute(String productId, UpdateProductRequestDTO dto) {
-        var product = productService.findById(productId);
+    public void execute(UpdateProductInputDTO dto) {
+        var product = productService.findById(dto.productId());
 
         if (product.isEmpty()) {
             throw new NotFoundException("Product not found");

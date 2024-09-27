@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases;
 
-import com.devvictor.ecommerce_api.application.dtos.SignupUserRequestDTO;
+import com.devvictor.ecommerce_api.application.dtos.input.SignupUserInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.BadRequestException;
 import com.devvictor.ecommerce_api.application.providers.HashProvider;
 import com.devvictor.ecommerce_api.application.services.UserService;
@@ -13,7 +13,7 @@ public class SignupUserUseCase {
     private final UserService userService;
     private final HashProvider hashProvider;
 
-    public void execute(SignupUserRequestDTO dto) {
+    public void execute(SignupUserInputDTO dto) {
        var existingUser = userService.findByEmail(dto.email());
 
        if (existingUser.isPresent()) {

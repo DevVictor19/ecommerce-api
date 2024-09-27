@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases;
 
-import com.devvictor.ecommerce_api.application.dtos.CreateProductRequestDTO;
+import com.devvictor.ecommerce_api.application.dtos.input.CreateProductInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.BadRequestException;
 import com.devvictor.ecommerce_api.application.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class CreateProductUseCase {
     private final ProductService productService;
 
-    public void execute(CreateProductRequestDTO dto) {
+    public void execute(CreateProductInputDTO dto) {
         var existingProduct = productService.findByName(dto.name());
 
         if (existingProduct.isPresent()) {

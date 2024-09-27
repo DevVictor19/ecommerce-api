@@ -1,4 +1,4 @@
-package com.devvictor.ecommerce_api.application.dtos;
+package com.devvictor.ecommerce_api.infra.contracts.request;
 
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
-public record UpdateProductRequestDTO(
+public record UpdateProductRequest(
         @Digits(integer = 10, fraction = 2)
         @Positive
         Double price,

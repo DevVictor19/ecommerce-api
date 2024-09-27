@@ -1,7 +1,7 @@
 package com.devvictor.ecommerce_api.application.use_cases;
 
-import com.devvictor.ecommerce_api.application.dtos.LoginUserRequestDTO;
-import com.devvictor.ecommerce_api.application.dtos.LoginUserResponseDTO;
+import com.devvictor.ecommerce_api.application.dtos.input.LoginUserInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.output.LoginUserOutputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.UnauthorizedException;
 import com.devvictor.ecommerce_api.application.providers.HashProvider;
 import com.devvictor.ecommerce_api.application.providers.JwtProvider;
@@ -16,7 +16,7 @@ public class LoginUserUseCase {
     private final HashProvider hashProvider;
     private final JwtProvider jwtProvider;
 
-    public LoginUserResponseDTO execute(LoginUserRequestDTO dto) {
+    public LoginUserOutputDTO execute(LoginUserInputDTO dto) {
         var existingUser = userService.findByEmail(dto.email());
 
         if (existingUser.isEmpty()) {
@@ -32,6 +32,6 @@ public class LoginUserUseCase {
 
         String token = jwtProvider.generateToken(existingUser.get().getId());
 
-        return new LoginUserResponseDTO(token);
+        return new LoginUserOutputDTO(token);
     }
 }
