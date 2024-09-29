@@ -1,7 +1,9 @@
 package com.devvictor.ecommerce_api.domain.entities;
 
 import com.devvictor.ecommerce_api.domain.enums.Role;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,11 +13,9 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import java.util.Date;
 import java.util.List;
 
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "users")
 public class User {
     @Id
