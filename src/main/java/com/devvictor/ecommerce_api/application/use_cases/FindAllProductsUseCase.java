@@ -1,6 +1,7 @@
 package com.devvictor.ecommerce_api.application.use_cases;
 
 import com.devvictor.ecommerce_api.application.dtos.input.FindAllProductsInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.output.ProductOutputDTO;
 import com.devvictor.ecommerce_api.application.services.ProductService;
 import com.devvictor.ecommerce_api.domain.entities.Product;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,20 @@ import org.springframework.stereotype.Component;
 public class FindAllProductsUseCase {
     private final ProductService productService;
 
-    public Page<Product> execute(FindAllProductsInputDTO dto) {
-        return productService.findAll(dto.name(), dto.page(), dto.size());
+    public Page<ProductOutputDTO> execute(FindAllProductsInputDTO dto) {
+        return productService
+                .findAll(dto.name(), dto.page(), dto.size())
+                .map(this::toDto);
+    }
+
+    private ProductOutputDTO toDto(Product product) {
+        return new ProductOutputDTO(
+                product.getId(),
+                product.getPrice(),
+                product.getName(),
+                product.getDescription(),
+                product.getPhotoUrl(),
+                product.getStockQuantity()
+        );
     }
 }
