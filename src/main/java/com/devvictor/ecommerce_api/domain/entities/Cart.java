@@ -65,13 +65,13 @@ public class Cart {
             throw new InvalidEntityOperationException("Product is not present in cart to subtract it");
         }
 
-        existentProduct.get().subtractInCartQuantity(-quantityToSub);
+        existentProduct.get().subtractInCartQuantity(quantityToSub);
 
         if (existentProduct.get().getInCartQuantity() == 0) {
             products.remove(existentProduct.get());
         }
 
-        double priceToSubtract = -existentProduct.get().getPrice() * quantityToSub;
+        double priceToSubtract = existentProduct.get().getPrice() * quantityToSub;
 
         subtractTotalPrice(priceToSubtract);
         subtractProductsQuantity(quantityToSub);
@@ -111,8 +111,8 @@ public class Cart {
     }
 
     private void subtractTotalPrice(double priceToSubtract) {
-        if (priceToSubtract >= 0) {
-            throw new InvalidEntityOperationException("Price to subtract must be a negative value");
+        if (totalPrice - priceToSubtract < 0) {
+            throw new InvalidEntityOperationException("Total price cannot be less than zero");
         }
 
         totalPrice -= priceToSubtract;
@@ -131,10 +131,6 @@ public class Cart {
     }
 
     private void subtractProductsQuantity(int quantityToSub) {
-        if (quantityToSub >= 0) {
-            throw new InvalidEntityOperationException("Quantity to subtract must be a negative value");
-        }
-
         if (productsQuantity - quantityToSub < 0) {
             throw new InvalidEntityOperationException("Quantity to subtract must not pass the minimum cart capacity");
         }

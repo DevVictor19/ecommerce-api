@@ -32,10 +32,6 @@ public class CartProduct {
     }
 
     public void subtractInCartQuantity(int quantityToSub) {
-        if (quantityToSub >= 0) {
-            throw new InvalidEntityOperationException("Quantity to subtract must be a negative value");
-        }
-
         if (inCartQuantity - quantityToSub < 0) {
             throw new InvalidEntityOperationException("In cart quantity cannot be less than zero");
         }
