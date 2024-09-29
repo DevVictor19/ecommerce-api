@@ -27,7 +27,7 @@ public class AddProductToCartUseCase {
             throw new NotFoundException("Product not found");
         }
 
-        Optional<Cart> cart = cartService.findByUserId(dto.userId());
+        Optional<Cart> userCart = cartService.findByUserId(dto.userId());
 
         CartProduct cartProduct = CartProductFactory.create(
                 product.get().getId(),
@@ -38,7 +38,7 @@ public class AddProductToCartUseCase {
                 dto.productQnt()
         );
 
-        if (cart.isEmpty()) {
+        if (userCart.isEmpty()) {
             Cart newCart = CartFactory.create(dto.userId());
             newCart.addProduct(cartProduct);
 
@@ -47,9 +47,7 @@ public class AddProductToCartUseCase {
             return;
         }
 
-        Cart existentCart = cart.get();
-        existentCart.addProduct(cartProduct);
-
-        cartService.update(existentCart);
+        userCart.get().addProduct(cartProduct);
+        cartService.update(userCart.get());
     }
 }
