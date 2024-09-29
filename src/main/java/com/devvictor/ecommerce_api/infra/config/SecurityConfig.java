@@ -34,6 +34,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/products").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, "/products/{id}").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, "/products/{id}").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, "/products/add-product").hasAuthority(Role.CLIENT.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
