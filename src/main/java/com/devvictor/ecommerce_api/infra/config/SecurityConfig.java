@@ -28,14 +28,21 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+
+                        // products
                         .requestMatchers(HttpMethod.GET, "/products").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.POST, "/products").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, "/products/{id}").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, "/products/{id}").hasAuthority(Role.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST, "/carts/add-product").hasAuthority(Role.CLIENT.name())
-                        .requestMatchers(HttpMethod.PUT, "/carts/subtract-product").hasAuthority(Role.CLIENT.name())
+
+                        // carts
+                        .requestMatchers(HttpMethod.POST, "/carts/user/products/add").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.PUT, "/carts/user/products/subtract").hasAuthority(Role.CLIENT.name())
+
+                        // any
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

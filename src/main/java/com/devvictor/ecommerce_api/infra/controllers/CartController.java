@@ -23,7 +23,7 @@ public class CartController {
     private final AddProductToCartUseCase addProductToCartUseCase;
     private final SubtractProductFromCartUseCase subtractProductFromCartUseCase;
 
-    @PostMapping("/add-product")
+    @PostMapping("/user/products/add")
     public ResponseEntity<Void> addProductToCart(@Valid @RequestBody AddProductToCartRequest body) {
         var user = (Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
@@ -42,7 +42,7 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/subtract-product")
+    @PutMapping("/user/products/subtract")
     public ResponseEntity<Void> subtractProduct(@Valid @RequestBody SubtractProductFromCartRequest body) {
         var user = (Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
