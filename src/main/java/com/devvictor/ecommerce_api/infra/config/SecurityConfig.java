@@ -41,6 +41,7 @@ public class SecurityConfig {
                         // carts
                         .requestMatchers(HttpMethod.POST, "/carts/user/products/add").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.PUT, "/carts/user/products/subtract").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.DELETE, "/carts/user/products").hasAuthority(Role.CLIENT.name())
 
                         // any
                         .anyRequest().denyAll()

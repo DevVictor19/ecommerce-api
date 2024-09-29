@@ -1,9 +1,11 @@
 package com.devvictor.ecommerce_api.infra.controllers;
 
 import com.devvictor.ecommerce_api.application.dtos.input.AddProductToCartInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.input.ClearCartInputDTO;
 import com.devvictor.ecommerce_api.application.dtos.input.SubtractProductFromCartInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.InternalServerErrorException;
 import com.devvictor.ecommerce_api.application.use_cases.AddProductToCartUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.ClearCartUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.SubtractProductFromCartUseCase;
 import com.devvictor.ecommerce_api.domain.entities.User;
 import com.devvictor.ecommerce_api.infra.contracts.request.AddProductToCartRequest;
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class CartController {
     private final AddProductToCartUseCase addProductToCartUseCase;
     private final SubtractProductFromCartUseCase subtractProductFromCartUseCase;
+    private final ClearCartUseCase clearCartUseCase;
 
     @PostMapping("/user/products/add")
     public ResponseEntity<Void> addProductToCart(@Valid @RequestBody AddProductToCartRequest body) {
@@ -57,6 +60,21 @@ public class CartController {
         );
 
         subtractProductFromCartUseCase.execute(input);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/user/products")
+    public ResponseEntity<Void> clearProducts() {
+        var user = (Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (user.isEmpty()) {
+            throw new InternalServerErrorException();
+        }
+
+        var input = new ClearCartInputDTO(user.get().getId());
+
+        clearCartUseCase.execute(input);
 
         return ResponseEntity.ok().build();
     }
