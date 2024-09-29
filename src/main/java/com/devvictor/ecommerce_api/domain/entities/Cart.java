@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.IntStream;
 
 @Getter
 @Setter
@@ -75,25 +74,6 @@ public class Cart {
 
         subtractTotalPrice(priceToSubtract);
         subtractProductsQuantity(quantityToSub);
-    }
-
-    public void removeProduct(String productId) {
-        int productIndex = IntStream.range(0, products.size())
-                .filter(i -> products.get(i).getId().equals(productId))
-                .findFirst()
-                .orElse(-1);
-
-        if (productIndex < 0) {
-            throw new InvalidEntityOperationException("Product is not present in cart to remove it");
-        }
-
-        CartProduct targetProduct = products.get(productIndex);
-
-        double priceToSubtract = -targetProduct.getPrice() * targetProduct.getInCartQuantity();
-
-        subtractTotalPrice(priceToSubtract);
-        subtractProductsQuantity(targetProduct.getInCartQuantity());
-        products.remove(productIndex);
     }
 
     public void clearProducts() {
