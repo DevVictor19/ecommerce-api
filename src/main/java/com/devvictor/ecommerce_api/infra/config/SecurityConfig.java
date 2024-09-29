@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/products/{id}").hasAuthority(Role.ADMIN.name())
 
                         // carts
+                        .requestMatchers(HttpMethod.GET, "/carts/user").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.POST, "/carts/user/products/add").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.PUT, "/carts/user/products/subtract").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.DELETE, "/carts/user/products").hasAuthority(Role.CLIENT.name())
