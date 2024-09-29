@@ -15,6 +15,7 @@ import com.devvictor.ecommerce_api.infra.contracts.request.AddProductToCartReque
 import com.devvictor.ecommerce_api.infra.contracts.request.SubtractProductFromCartRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,7 @@ public class CartController {
 
         addProductToCartUseCase.execute(input);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/user/products/subtract")
