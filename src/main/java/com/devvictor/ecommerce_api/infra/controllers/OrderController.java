@@ -1,9 +1,9 @@
 package com.devvictor.ecommerce_api.infra.controllers;
 
-import com.devvictor.ecommerce_api.application.dtos.input.CancelOrderInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.CreateOrderInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.FindAllUserOrdersInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.OrderOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.CancelOrderInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.CreateOrderInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.FindAllUserOrdersInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.OrderOutputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.InternalServerErrorException;
 import com.devvictor.ecommerce_api.application.use_cases.orders.CancelOrderUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.orders.CreateOrderUseCase;

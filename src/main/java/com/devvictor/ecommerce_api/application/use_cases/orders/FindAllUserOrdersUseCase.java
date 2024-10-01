@@ -1,7 +1,7 @@
 package com.devvictor.ecommerce_api.application.use_cases.orders;
 
-import com.devvictor.ecommerce_api.application.dtos.input.FindAllUserOrdersInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.OrderOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.FindAllUserOrdersInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.OrderOutputDTO;
 import com.devvictor.ecommerce_api.application.mappers.OrderEntityMapper;
 import com.devvictor.ecommerce_api.application.services.OrderService;
 import lombok.RequiredArgsConstructor;

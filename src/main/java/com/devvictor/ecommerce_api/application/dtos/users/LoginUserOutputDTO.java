@@ -1,4 +1,4 @@
-package com.devvictor.ecommerce_api.application.dtos.output;
+package com.devvictor.ecommerce_api.application.dtos.users;
 
 public record LoginUserOutputDTO(
         String token

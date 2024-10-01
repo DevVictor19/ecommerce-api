@@ -1,7 +1,7 @@
 package com.devvictor.ecommerce_api.application.use_cases.carts;
 
-import com.devvictor.ecommerce_api.application.dtos.input.FindCartByUserInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.CartOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.FindCartByUserInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.CartOutputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.mappers.CartEntityMapper;
 import com.devvictor.ecommerce_api.application.services.CartService;

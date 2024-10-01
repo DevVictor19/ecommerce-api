@@ -1,8 +1,8 @@
 package com.devvictor.ecommerce_api.infra.controllers;
 
-import com.devvictor.ecommerce_api.application.dtos.input.LoginUserInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.SignupUserInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.LoginUserOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.users.LoginUserInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.users.SignupUserInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.users.LoginUserOutputDTO;
 import com.devvictor.ecommerce_api.application.use_cases.users.LoginUserUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.users.SignupUserUseCase;
 import com.devvictor.ecommerce_api.infra.contracts.request.LoginUserRequest;

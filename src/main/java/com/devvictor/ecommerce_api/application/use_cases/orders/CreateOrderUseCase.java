@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases.orders;
 
-import com.devvictor.ecommerce_api.application.dtos.input.CreateOrderInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.CreateOrderInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.CartService;
 import com.devvictor.ecommerce_api.application.services.OrderService;

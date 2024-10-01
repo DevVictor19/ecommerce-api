@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases.orders;
 
-import com.devvictor.ecommerce_api.application.dtos.input.CancelOrderInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.orders.CancelOrderInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.OrderService;
 import com.devvictor.ecommerce_api.domain.entities.Order;

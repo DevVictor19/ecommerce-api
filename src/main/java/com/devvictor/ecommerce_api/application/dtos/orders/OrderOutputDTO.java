@@ -1,5 +1,6 @@
-package com.devvictor.ecommerce_api.application.dtos.output;
+package com.devvictor.ecommerce_api.application.dtos.orders;
 
+import com.devvictor.ecommerce_api.application.dtos.carts.CartOutputDTO;
 import com.devvictor.ecommerce_api.domain.enums.OrderStatus;
 
 import java.util.Date;

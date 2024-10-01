@@ -1,7 +1,7 @@
 package com.devvictor.ecommerce_api.application.use_cases.users;
 
-import com.devvictor.ecommerce_api.application.dtos.input.LoginUserInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.LoginUserOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.users.LoginUserInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.users.LoginUserOutputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.UnauthorizedException;
 import com.devvictor.ecommerce_api.application.providers.HashProvider;
 import com.devvictor.ecommerce_api.application.providers.JwtProvider;

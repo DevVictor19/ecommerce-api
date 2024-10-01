@@ -1,10 +1,10 @@
 package com.devvictor.ecommerce_api.infra.controllers;
 
-import com.devvictor.ecommerce_api.application.dtos.input.AddProductToCartInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.ClearCartInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.FindCartByUserInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.SubtractProductFromCartInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.CartOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.AddProductToCartInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.ClearCartInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.FindCartByUserInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.SubtractProductFromCartInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.CartOutputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.InternalServerErrorException;
 import com.devvictor.ecommerce_api.application.use_cases.carts.AddProductToCartUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.carts.ClearCartUseCase;

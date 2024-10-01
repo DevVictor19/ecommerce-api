@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases.users;
 
-import com.devvictor.ecommerce_api.application.dtos.input.SignupUserInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.users.SignupUserInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.BadRequestException;
 import com.devvictor.ecommerce_api.application.providers.HashProvider;
 import com.devvictor.ecommerce_api.application.services.UserService;

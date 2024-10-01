@@ -1,10 +1,10 @@
 package com.devvictor.ecommerce_api.infra.controllers;
 
-import com.devvictor.ecommerce_api.application.dtos.input.CreateProductInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.DeleteProductInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.FindAllProductsInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.UpdateProductInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.ProductOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.products.CreateProductInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.products.DeleteProductInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.products.FindAllProductsInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.products.UpdateProductInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.products.ProductOutputDTO;
 import com.devvictor.ecommerce_api.application.use_cases.products.CreateProductUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.products.DeleteProductUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.products.FindAllProductsUseCase;

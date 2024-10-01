@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases.products;
 
-import com.devvictor.ecommerce_api.application.dtos.input.DeleteProductInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.products.DeleteProductInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.ProductService;
 import lombok.RequiredArgsConstructor;

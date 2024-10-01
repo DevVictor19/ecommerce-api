@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.use_cases.products;
 
-import com.devvictor.ecommerce_api.application.dtos.input.UpdateProductInputDTO;
+import com.devvictor.ecommerce_api.application.dtos.products.UpdateProductInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.ProductService;
 import lombok.RequiredArgsConstructor;

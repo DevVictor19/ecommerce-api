@@ -1,6 +1,6 @@
 package com.devvictor.ecommerce_api.application.mappers;
 
-import com.devvictor.ecommerce_api.application.dtos.output.CartOutputDTO;
+import com.devvictor.ecommerce_api.application.dtos.carts.CartOutputDTO;
 import com.devvictor.ecommerce_api.domain.entities.Cart;
 import org.mapstruct.Mapper;
 
