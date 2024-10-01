@@ -1,4 +1,4 @@
-package com.devvictor.ecommerce_api.application.use_cases;
+package com.devvictor.ecommerce_api.application.use_cases.users;
 
 import com.devvictor.ecommerce_api.application.dtos.input.SignupUserInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.BadRequestException;

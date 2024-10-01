@@ -1,4 +1,4 @@
-package com.devvictor.ecommerce_api.application.use_cases;
+package com.devvictor.ecommerce_api.application.use_cases.products;
 
 import com.devvictor.ecommerce_api.application.dtos.input.DeleteProductInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;

@@ -6,10 +6,10 @@ import com.devvictor.ecommerce_api.application.dtos.input.FindCartByUserInputDTO
 import com.devvictor.ecommerce_api.application.dtos.input.SubtractProductFromCartInputDTO;
 import com.devvictor.ecommerce_api.application.dtos.output.CartOutputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.InternalServerErrorException;
-import com.devvictor.ecommerce_api.application.use_cases.AddProductToCartUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.ClearCartUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.FindCartByUserUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.SubtractProductFromCartUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.AddProductToCartUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.ClearCartUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.FindCartByUserUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.SubtractProductFromCartUseCase;
 import com.devvictor.ecommerce_api.domain.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
