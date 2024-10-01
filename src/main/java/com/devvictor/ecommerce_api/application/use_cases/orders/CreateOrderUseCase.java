@@ -6,10 +6,11 @@ import com.devvictor.ecommerce_api.application.services.CartService;
 import com.devvictor.ecommerce_api.application.services.OrderService;
 import com.devvictor.ecommerce_api.domain.entities.Cart;
 import com.devvictor.ecommerce_api.domain.entities.Order;
+import com.devvictor.ecommerce_api.domain.entities.OrderCart;
+import com.devvictor.ecommerce_api.domain.factories.OrderCartFactory;
 import com.devvictor.ecommerce_api.domain.factories.OrderFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -26,7 +27,15 @@ public class CreateOrderUseCase {
             throw new NotFoundException("Cart not found");
         }
 
-        Order order = OrderFactory.create(dto.userId(), cart.get());
+        OrderCart orderCart = OrderCartFactory.create(
+                cart.get().getId(),
+                cart.get().getProducts(),
+                cart.get().getProductsQuantity(),
+                cart.get().getTotalPrice(),
+                cart.get().getCreatedAt()
+        );
+
+        Order order = OrderFactory.create(dto.userId(), orderCart);
 
         orderService.create(order);
 
