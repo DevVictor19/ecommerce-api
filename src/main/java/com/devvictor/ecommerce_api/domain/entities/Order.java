@@ -20,7 +20,7 @@ public class Order {
     private String id;
     private String userId;
     private OrderStatus status;
-    private Cart cart;
+    private OrderCart cart;
     private Payment payment;
 
     @Field(name = "created_at", targetType = FieldType.DATE_TIME)
