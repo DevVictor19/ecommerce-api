@@ -1,9 +1,10 @@
 package com.devvictor.ecommerce_api.domain.entities;
 
-import com.devvictor.ecommerce_api.domain.exceptions.InsufficientStockQuantityException;
-import lombok.*;
+import com.devvictor.ecommerce_api.domain.exceptions.InvalidEntityOperationException;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.index.TextIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -11,16 +12,14 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import java.util.Date;
 
-@Builder
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Document(collection = "products")
 public class Product {
     @Id
     private String id;
-    private double price;
+    private long price; // cents
 
     @TextIndexed
     private String name;
@@ -37,7 +36,7 @@ public class Product {
 
     public void subtractFromStock(int quantity) {
         if (quantity > stockQuantity) {
-            throw new InsufficientStockQuantityException();
+            throw new InvalidEntityOperationException("Quantity to subtract no available on stock");
         }
 
         stockQuantity -= quantity;

@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.devvictor.ecommerce_api.application.exceptions.BadRequestException;
 import com.devvictor.ecommerce_api.application.providers.EnvConfigProvider;
 import com.devvictor.ecommerce_api.application.providers.JwtProvider;
 import org.springframework.stereotype.Component;
@@ -37,7 +36,7 @@ public class JwtProviderImpl implements JwtProvider {
                     .withExpiresAt(expiration)
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
-            throw new BadRequestException("Error while generating token");
+            throw new RuntimeException("Error while generating token");
         }
     }
 
@@ -50,7 +49,7 @@ public class JwtProviderImpl implements JwtProvider {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException exception){
-            throw new BadRequestException("Error while validating token");
+            throw new RuntimeException("Error while validating token");
         }
     }
 }

@@ -7,24 +7,24 @@ import java.util.*;
 
 public class UserFactory {
     public static User create(String username, String email, String password) {
-        return User.builder()
-                .id(UUID.randomUUID().toString())
-                .username(username)
-                .email(email)
-                .password(password)
-                .roles(List.of(Role.CLIENT))
-                .createdAt(new Date())
-                .build();
+        var entity = new User();
+        entity.setId(UUID.randomUUID().toString());
+        entity.setUsername(username);
+        entity.setEmail(email);
+        entity.setPassword(password);
+        entity.setRoles(List.of(Role.CLIENT));
+        entity.setCreatedAt(new Date());
+        return entity;
     }
 
     public static User create(String username, String email, String password, List<Role> roles) {
-        return User.builder()
-                .id(UUID.randomUUID().toString())
-                .username(username)
-                .email(email)
-                .password(password)
-                .roles(roles)
-                .createdAt(new Date())
-                .build();
+        var entity = new User();
+        entity.setId(UUID.randomUUID().toString());
+        entity.setUsername(username);
+        entity.setEmail(email);
+        entity.setPassword(password);
+        entity.setRoles(roles);
+        entity.setCreatedAt(new Date());
+        return entity;
     }
 }

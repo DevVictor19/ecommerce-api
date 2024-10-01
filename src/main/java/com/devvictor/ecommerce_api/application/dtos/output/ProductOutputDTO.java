@@ -1,6 +1,7 @@
-package com.devvictor.ecommerce_api.application.dtos.input;
+package com.devvictor.ecommerce_api.application.dtos.output;
 
-public record CreateProductInputDTO(
+public record ProductOutputDTO(
+        String id,
         long price,
         String name,
         String description,

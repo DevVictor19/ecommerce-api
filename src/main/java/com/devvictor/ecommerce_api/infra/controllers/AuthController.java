@@ -7,7 +7,6 @@ import com.devvictor.ecommerce_api.application.use_cases.LoginUserUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.SignupUserUseCase;
 import com.devvictor.ecommerce_api.infra.contracts.request.LoginUserRequest;
 import com.devvictor.ecommerce_api.infra.contracts.request.SignupUserRequest;
-import com.devvictor.ecommerce_api.infra.contracts.response.LoginUserResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,7 +37,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginUserResponse> login(@Valid @RequestBody LoginUserRequest body) {
+    public ResponseEntity<LoginUserOutputDTO> login(@Valid @RequestBody LoginUserRequest body) {
         LoginUserInputDTO input = new LoginUserInputDTO(
                 body.email(),
                 body.password()
@@ -46,8 +45,6 @@ public class AuthController {
 
         LoginUserOutputDTO output = loginUserUseCase.execute(input);
 
-        LoginUserResponse response = new LoginUserResponse(output.token());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(output);
     }
 }

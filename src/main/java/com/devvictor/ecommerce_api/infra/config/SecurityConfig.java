@@ -28,13 +28,24 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // auth
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/signup").permitAll()
+
+                        // products
                         .requestMatchers(HttpMethod.GET, "/products").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.POST, "/products").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, "/products/{id}").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, "/products/{id}").hasAuthority(Role.ADMIN.name())
-                        .anyRequest().authenticated()
+
+                        // carts
+                        .requestMatchers(HttpMethod.GET, "carts/my-cart").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.DELETE, "carts/my-cart").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.POST, "carts/my-cart/products/{productId}").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.DELETE, "carts/my-cart/products/{productId}").hasAuthority(Role.CLIENT.name())
+
+                        // any
+                        .anyRequest().denyAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .httpBasic(Customizer.withDefaults())

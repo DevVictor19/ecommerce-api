@@ -26,11 +26,11 @@ public class ProductService {
         }
     }
 
-    public void create( double price,
-                        String name,
-                        String description,
-                        String photoUrl,
-                        int stockQuantity) {
+    public void create(long price,
+                       String name,
+                       String description,
+                       String photoUrl,
+                       int stockQuantity) {
 
         Product product = ProductFactory.create(
                 price,
