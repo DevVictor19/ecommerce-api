@@ -22,7 +22,6 @@ public class ClearCartUseCase {
         }
 
         Cart existentCart = cart.get();
-        existentCart.clearProducts();
 
         cartService.delete(existentCart);
     }
