@@ -33,7 +33,7 @@ public class Cart {
     private int productsQuantity;
 
     @Field(name = "total_price")
-    private double totalPrice;
+    private long totalPrice; // cents
 
     @Field(name = "created_at", targetType = FieldType.DATE_TIME)
     private Date createdAt;
@@ -49,7 +49,7 @@ public class Cart {
            products.add(product);
        }
 
-       double priceToAdd = product.getPrice() * product.getInCartQuantity();
+       long priceToAdd = product.getPrice() * product.getInCartQuantity();
 
        addTotalPrice(priceToAdd);
        addProductsQuantity(product.getInCartQuantity());
@@ -70,7 +70,7 @@ public class Cart {
             products.remove(existentProduct.get());
         }
 
-        double priceToSubtract = existentProduct.get().getPrice() * quantityToSub;
+        long priceToSubtract = existentProduct.get().getPrice() * quantityToSub;
 
         subtractTotalPrice(priceToSubtract);
         subtractProductsQuantity(quantityToSub);
@@ -82,7 +82,7 @@ public class Cart {
         productsQuantity = 0;
     }
 
-    private void addTotalPrice(double priceToAdd) {
+    private void addTotalPrice(long priceToAdd) {
         if (priceToAdd <= 0) {
             throw new InvalidEntityOperationException("Price to add must be a positive value");
         }
@@ -90,7 +90,7 @@ public class Cart {
         totalPrice += priceToAdd;
     }
 
-    private void subtractTotalPrice(double priceToSubtract) {
+    private void subtractTotalPrice(long priceToSubtract) {
         if (totalPrice - priceToSubtract < 0) {
             throw new InvalidEntityOperationException("Total price cannot be less than zero");
         }

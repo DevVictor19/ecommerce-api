@@ -19,7 +19,7 @@ import java.util.Date;
 public class Product {
     @Id
     private String id;
-    private double price;
+    private long price; // cents
 
     @TextIndexed
     private String name;

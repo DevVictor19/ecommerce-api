@@ -6,6 +6,6 @@ public record CartOutputDTO(
         String id,
         List<CartProductOutputDTO> products,
         int productsQuantity,
-        double totalPrice
+        long totalPrice
 ) {
 }

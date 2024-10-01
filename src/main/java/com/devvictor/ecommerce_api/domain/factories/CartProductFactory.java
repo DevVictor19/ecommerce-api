@@ -7,7 +7,7 @@ import java.util.Date;
 public class CartProductFactory {
 
     public static CartProduct create(String id,
-                                     double price,
+                                     long price,
                                      String name,
                                      String description,
                                      String photoUrl,

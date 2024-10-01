@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class ProductFactory {
-    public static Product create(double price,
+    public static Product create(long price,
                                  String name,
                                  String description,
                                  String photoUrl,

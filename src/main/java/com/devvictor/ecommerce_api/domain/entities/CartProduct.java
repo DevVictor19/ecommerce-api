@@ -13,7 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 public class CartProduct {
     @Id
     private String id;
-    private double price;
+    private long price; // cents
     private String name;
     private String description;
 

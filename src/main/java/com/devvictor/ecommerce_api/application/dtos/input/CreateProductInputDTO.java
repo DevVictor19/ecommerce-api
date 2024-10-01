@@ -1,10 +1,10 @@
 package com.devvictor.ecommerce_api.application.dtos.input;
 
 public record CreateProductInputDTO(
-        Double price,
+        long price,
         String name,
         String description,
         String photoUrl,
-        Integer stockQuantity
+        int stockQuantity
 ) {
 }
