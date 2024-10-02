@@ -1,14 +1,17 @@
-package com.devvictor.ecommerce_api.infra.contracts.request;
+package com.devvictor.ecommerce_api.infra.dtos.carts;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
+import org.hibernate.validator.constraints.UUID;
 
-public record CreateProductRequest(
+public record CartProductDTO(
+        @UUID
+        String id,
+
         @Positive
-        Long price,
+        long price,
 
         @NotBlank
         @Length(min = 4, max = 25)
@@ -21,7 +24,7 @@ public record CreateProductRequest(
         @URL
         String photoUrl,
 
-        @PositiveOrZero
-        Integer stockQuantity
+        @Positive
+        int inCartQuantity
 ) {
 }

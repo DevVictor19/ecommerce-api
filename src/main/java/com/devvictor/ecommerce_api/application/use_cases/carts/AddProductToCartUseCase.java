@@ -1,6 +1,5 @@
 package com.devvictor.ecommerce_api.application.use_cases.carts;
 
-import com.devvictor.ecommerce_api.application.dtos.carts.AddProductToCartInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.CartService;
 import com.devvictor.ecommerce_api.application.services.ProductService;
@@ -20,14 +19,14 @@ public class AddProductToCartUseCase {
     private final CartService cartService;
     private final ProductService productService;
 
-    public void execute(AddProductToCartInputDTO dto) {
-        Optional<Product> product = productService.findById(dto.productId());
+    public void execute(String productId, String userId, int quantity) {
+        Optional<Product> product = productService.findById(productId);
 
         if (product.isEmpty()) {
             throw new NotFoundException("Product not found");
         }
 
-        Optional<Cart> userCart = cartService.findByUserId(dto.userId());
+        Optional<Cart> userCart = cartService.findByUserId(userId);
 
         CartProduct cartProduct = CartProductFactory.create(
                 product.get().getId(),
@@ -35,11 +34,11 @@ public class AddProductToCartUseCase {
                 product.get().getName(),
                 product.get().getDescription(),
                 product.get().getPhotoUrl(),
-                dto.productQnt()
+                quantity
         );
 
         if (userCart.isEmpty()) {
-            Cart newCart = CartFactory.create(dto.userId());
+            Cart newCart = CartFactory.create(userId);
             newCart.addProduct(cartProduct);
 
             cartService.create(newCart);

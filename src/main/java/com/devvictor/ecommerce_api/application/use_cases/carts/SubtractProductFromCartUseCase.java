@@ -1,6 +1,5 @@
 package com.devvictor.ecommerce_api.application.use_cases.carts;
 
-import com.devvictor.ecommerce_api.application.dtos.carts.SubtractProductFromCartInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.CartService;
 import com.devvictor.ecommerce_api.domain.entities.Cart;
@@ -14,8 +13,8 @@ import java.util.Optional;
 public class SubtractProductFromCartUseCase {
     private final CartService cartService;
 
-    public void execute(SubtractProductFromCartInputDTO dto) {
-        Optional<Cart> cart = cartService.findByUserId(dto.userId());
+    public void execute(String productId, String userId, int quantity) {
+        Optional<Cart> cart = cartService.findByUserId(userId);
 
         if (cart.isEmpty()) {
             throw new NotFoundException("Cart not found");
@@ -23,7 +22,7 @@ public class SubtractProductFromCartUseCase {
 
         Cart existentCart = cart.get();
 
-        existentCart.subtractProduct(dto.productId(), dto.productQnt());
+        existentCart.subtractProduct(productId, quantity);
 
         if (existentCart.getProductsQuantity() == 0) {
             cartService.delete(existentCart);

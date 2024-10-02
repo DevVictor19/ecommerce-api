@@ -1,6 +1,5 @@
 package com.devvictor.ecommerce_api.application.use_cases.products;
 
-import com.devvictor.ecommerce_api.application.dtos.products.DeleteProductInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class DeleteProductUseCase {
     private final ProductService productService;
 
-    public void execute(DeleteProductInputDTO dto) {
-        var product = productService.findById(dto.productId());
+    public void execute(String productId) {
+        var product = productService.findById(productId);
 
         if (product.isEmpty()) {
             throw new NotFoundException("Product not found");

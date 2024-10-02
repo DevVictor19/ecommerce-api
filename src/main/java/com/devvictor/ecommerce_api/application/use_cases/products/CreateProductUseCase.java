@@ -1,6 +1,5 @@
 package com.devvictor.ecommerce_api.application.use_cases.products;
 
-import com.devvictor.ecommerce_api.application.dtos.products.CreateProductInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.BadRequestException;
 import com.devvictor.ecommerce_api.application.services.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -11,19 +10,18 @@ import org.springframework.stereotype.Component;
 public class CreateProductUseCase {
     private final ProductService productService;
 
-    public void execute(CreateProductInputDTO dto) {
-        var existingProduct = productService.findByName(dto.name());
+    public void execute(long price,
+                        String name,
+                        String description,
+                        String photoUrl,
+                        int stockQuantity) {
+
+        var existingProduct = productService.findByName(name);
 
         if (existingProduct.isPresent()) {
             throw new BadRequestException("Product name already exists");
         }
 
-        productService.create(
-                dto.price(),
-                dto.name(),
-                dto.description(),
-                dto.photoUrl(),
-                dto.stockQuantity()
-        );
+        productService.create(price, name, description, photoUrl, stockQuantity);
     }
 }

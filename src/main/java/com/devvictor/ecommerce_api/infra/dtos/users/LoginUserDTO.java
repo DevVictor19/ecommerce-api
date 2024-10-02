@@ -1,16 +1,12 @@
-package com.devvictor.ecommerce_api.infra.contracts.request;
+package com.devvictor.ecommerce_api.infra.dtos.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record SignupUserRequest(
+public record LoginUserDTO(
         @NotBlank
-        @Size(min = 3, max = 55)
-        String username,
-
         @Email
-        @NotBlank
         String email,
 
         @NotBlank

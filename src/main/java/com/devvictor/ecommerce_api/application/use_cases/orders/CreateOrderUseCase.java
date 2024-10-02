@@ -1,6 +1,5 @@
 package com.devvictor.ecommerce_api.application.use_cases.orders;
 
-import com.devvictor.ecommerce_api.application.dtos.orders.CreateOrderInputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.services.CartService;
 import com.devvictor.ecommerce_api.application.services.OrderService;
@@ -20,8 +19,8 @@ public class CreateOrderUseCase {
     private final CartService cartService;
     private final OrderService orderService;
 
-    public void execute(CreateOrderInputDTO dto) {
-        Optional<Cart> cart = cartService.findByUserId(dto.userId());
+    public void execute(String userId) {
+        Optional<Cart> cart = cartService.findByUserId(userId);
 
         if (cart.isEmpty()) {
             throw new NotFoundException("Cart not found");
@@ -35,7 +34,7 @@ public class CreateOrderUseCase {
                 cart.get().getCreatedAt()
         );
 
-        Order order = OrderFactory.create(dto.userId(), orderCart);
+        Order order = OrderFactory.create(userId, orderCart);
 
         orderService.create(order);
 

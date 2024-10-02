@@ -1,4 +1,4 @@
-package com.devvictor.ecommerce_api.infra.contracts.request;
+package com.devvictor.ecommerce_api.infra.dtos.products;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -6,9 +6,9 @@ import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 
-public record UpdateProductRequest(
+public record CreateProductDTO(
         @Positive
-        Long price,
+        long price,
 
         @NotBlank
         @Length(min = 4, max = 25)
@@ -22,6 +22,6 @@ public record UpdateProductRequest(
         String photoUrl,
 
         @PositiveOrZero
-        Integer stockQuantity
+        int stockQuantity
 ) {
 }
