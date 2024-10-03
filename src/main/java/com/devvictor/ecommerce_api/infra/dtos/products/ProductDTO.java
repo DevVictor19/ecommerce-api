@@ -1,11 +1,14 @@
 package com.devvictor.ecommerce_api.infra.dtos.products;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.constraints.UUID;
+
+import java.util.Date;
 
 public record ProductDTO(
         @UUID
@@ -26,6 +29,9 @@ public record ProductDTO(
         String photoUrl,
 
         @PositiveOrZero
-        int stockQuantity
+        int stockQuantity,
+
+        @NotNull
+        Date createdAt
 ) {
 }

@@ -29,13 +29,14 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(
-            @RequestParam(required = false) String name,
-            @RequestParam int page,
-            @RequestParam int size
-    ) {
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "desc") String sort,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(required = false) String name) {
 
         return ResponseEntity.ok(findAllProductsUseCase
-                .execute(name, page, size)
+                .execute(page, size, sort, sortBy, name)
                 .map(productEntityMapper::toDto)
         );
     }

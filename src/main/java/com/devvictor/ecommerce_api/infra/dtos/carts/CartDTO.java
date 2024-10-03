@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.UUID;
 
+import java.util.Date;
 import java.util.List;
 
 public record CartDTO(
@@ -17,6 +18,9 @@ public record CartDTO(
         int productsQuantity,
 
         @Positive
-        long totalPrice
+        long totalPrice,
+
+        @NotNull
+        Date createdAt
 ) {
 }
