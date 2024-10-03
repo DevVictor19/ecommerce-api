@@ -3,8 +3,10 @@ package com.devvictor.ecommerce_api.infra.controllers;
 import com.devvictor.ecommerce_api.application.exceptions.InternalServerErrorException;
 import com.devvictor.ecommerce_api.application.use_cases.orders.CancelOrderUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.orders.CreateOrderUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.orders.FindAllOrdersUseCase;
 import com.devvictor.ecommerce_api.application.use_cases.orders.FindAllUserOrdersUseCase;
 import com.devvictor.ecommerce_api.domain.entities.User;
+import com.devvictor.ecommerce_api.domain.enums.OrderStatus;
 import com.devvictor.ecommerce_api.infra.dtos.orders.OrderDTO;
 import com.devvictor.ecommerce_api.infra.mappers.OrderEntityMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +23,24 @@ import java.util.UUID;
 @RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
+    private final FindAllOrdersUseCase findAllOrdersUseCase;
     private final FindAllUserOrdersUseCase findAllUserOrdersUseCase;
     private final CreateOrderUseCase createOrderUseCase;
     private final CancelOrderUseCase cancelOrderUseCase;
     private final OrderEntityMapper orderEntityMapper;
+
+    @GetMapping
+    public ResponseEntity<Page<OrderDTO>> findAllOrders(@RequestParam(defaultValue = "0") int page,
+                                                        @RequestParam(defaultValue = "10") int size,
+                                                        @RequestParam(defaultValue = "desc") String sort,
+                                                        @RequestParam(defaultValue = "createdAt") String sortBy,
+                                                        @RequestParam(required = false) OrderStatus status) {
+
+        return ResponseEntity.ok(findAllOrdersUseCase
+                .execute(page, size, sort, sortBy, status)
+                .map(orderEntityMapper::toDto)
+        );
+    }
 
     @GetMapping("/my-orders")
     public ResponseEntity<Page<OrderDTO>> findAllUserOrders(@RequestParam int page,
