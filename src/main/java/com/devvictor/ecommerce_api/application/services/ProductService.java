@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,8 +16,17 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public Page<Product> findAll(String name, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+    public Page<Product> findAll(int page,
+                                 int size,
+                                 String sort,
+                                 String sortBy,
+                                 String name) {
+
+        Sort.Direction direction = sort.equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
         if (name == null || name.trim().isEmpty()) {
             return productRepository.findAll(pageable);
