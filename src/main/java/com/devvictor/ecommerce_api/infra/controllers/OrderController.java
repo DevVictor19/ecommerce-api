@@ -43,11 +43,14 @@ public class OrderController {
     }
 
     @GetMapping("/my-orders")
-    public ResponseEntity<Page<OrderDTO>> findAllUserOrders(@RequestParam int page,
-                                                            @RequestParam int size) {
+    public ResponseEntity<Page<OrderDTO>> findAllUserOrders(@RequestParam(defaultValue = "0") int page,
+                                                            @RequestParam(defaultValue = "10") int size,
+                                                            @RequestParam(defaultValue = "desc") String sort,
+                                                            @RequestParam(defaultValue = "createdAt") String sortBy,
+                                                            @RequestParam(required = false) OrderStatus status) {
 
         return ResponseEntity.ok(findAllUserOrdersUseCase
-                .execute(getAuthenticatedUser().getId(), page, size)
+                .execute(page, size, sort, sortBy, getAuthenticatedUser().getId(), status)
                 .map(orderEntityMapper::toDto)
         );
     }

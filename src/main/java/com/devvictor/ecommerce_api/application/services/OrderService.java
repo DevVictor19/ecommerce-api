@@ -29,9 +29,23 @@ public class OrderService {
         return orderRepository.findByIdAndUserId(orderId, userId);
     }
 
-    public Page<Order> findRecentByUser(String userId, int page, int size) {
-        Sort sort = Sort.by("created_at").descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
+    public Page<Order> findAllUserOrders(int page,
+                                         int size,
+                                         String sort,
+                                         String sortBy,
+                                         String userId,
+                                         OrderStatus status) {
+
+        Sort.Direction direction = sort.equalsIgnoreCase("asc")
+                ? Sort.Direction.ASC
+                : Sort.Direction.DESC;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        if (status != null) {
+            return orderRepository.findByUserIdAndStatus(userId, status, pageable);
+        }
+
         return orderRepository.findByUserId(userId, pageable);
     }
 
