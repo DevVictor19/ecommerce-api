@@ -1,13 +1,10 @@
 package com.devvictor.ecommerce_api.infra.dtos.carts;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.URL;
 import org.hibernate.validator.constraints.UUID;
-
-import java.util.Date;
 
 public record CartProductDTO(
         @UUID
