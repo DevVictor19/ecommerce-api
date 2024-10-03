@@ -63,9 +63,9 @@ public class OrderService {
 
         if (status != null) {
             return orderRepository.findByStatus(status, pageable);
-        } else {
-            return orderRepository.findAll(pageable);
         }
+
+        return orderRepository.findAll(pageable);
     }
 
     public void delete(Order order) {
