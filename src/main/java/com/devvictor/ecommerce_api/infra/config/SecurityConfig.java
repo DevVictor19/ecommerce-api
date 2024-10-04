@@ -39,10 +39,16 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/products/{id}").hasAuthority(Role.ADMIN.name())
 
                         // carts
-                        .requestMatchers(HttpMethod.GET, "carts/my-cart").hasAuthority(Role.CLIENT.name())
-                        .requestMatchers(HttpMethod.DELETE, "carts/my-cart").hasAuthority(Role.CLIENT.name())
-                        .requestMatchers(HttpMethod.POST, "carts/my-cart/products/{productId}").hasAuthority(Role.CLIENT.name())
-                        .requestMatchers(HttpMethod.DELETE, "carts/my-cart/products/{productId}").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.GET, "/carts/my-cart").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.DELETE, "/carts/my-cart").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.POST, "/carts/my-cart/products/{productId}").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.DELETE, "/carts/my-cart/products/{productId}").hasAuthority(Role.CLIENT.name())
+
+                        // orders
+                        .requestMatchers(HttpMethod.GET, "/orders").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers(HttpMethod.GET, "/orders/my-orders").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.POST, "/orders/my-orders").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.DELETE, "/orders/my-orders/{orderId}").hasAuthority(Role.CLIENT.name())
 
                         // any
                         .anyRequest().denyAll()

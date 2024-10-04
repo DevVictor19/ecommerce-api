@@ -1,16 +1,13 @@
 package com.devvictor.ecommerce_api.infra.controllers;
 
-import com.devvictor.ecommerce_api.application.dtos.input.CreateProductInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.DeleteProductInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.FindAllProductsInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.UpdateProductInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.ProductOutputDTO;
-import com.devvictor.ecommerce_api.application.use_cases.CreateProductUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.DeleteProductUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.FindAllProductsUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.UpdateProductUseCase;
-import com.devvictor.ecommerce_api.infra.contracts.request.CreateProductRequest;
-import com.devvictor.ecommerce_api.infra.contracts.request.UpdateProductRequest;
+import com.devvictor.ecommerce_api.application.use_cases.products.CreateProductUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.products.DeleteProductUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.products.FindAllProductsUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.products.UpdateProductUseCase;
+import com.devvictor.ecommerce_api.infra.dtos.products.CreateProductDTO;
+import com.devvictor.ecommerce_api.infra.dtos.products.ProductDTO;
+import com.devvictor.ecommerce_api.infra.dtos.products.UpdateProductDTO;
+import com.devvictor.ecommerce_api.infra.mappers.ProductEntityMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,56 +25,54 @@ public class ProductController {
     private final CreateProductUseCase createProductUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
     private final UpdateProductUseCase updateProductUseCase;
+    private final ProductEntityMapper productEntityMapper;
 
     @GetMapping
-    public ResponseEntity<Page<ProductOutputDTO>> findAll(
-            @RequestParam(required = false) String name,
-            @RequestParam int page,
-            @RequestParam int size
-    ) {
-        FindAllProductsInputDTO input = new FindAllProductsInputDTO(name, page, size);
+    public ResponseEntity<Page<ProductDTO>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "desc") String sort,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(required = false) String name) {
 
-        return ResponseEntity.ok(findAllProductsUseCase.execute(input));
+        return ResponseEntity.ok(findAllProductsUseCase
+                .execute(page, size, sort, sortBy, name)
+                .map(productEntityMapper::toDto)
+        );
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@Valid @RequestBody CreateProductRequest body) {
-        CreateProductInputDTO input = new CreateProductInputDTO(
-                body.price(),
-                body.name(),
-                body.description(),
-                body.photoUrl(),
-                body.stockQuantity()
+    public ResponseEntity<Void> create(@Valid @RequestBody CreateProductDTO dto) {
+        createProductUseCase.execute(
+                dto.price(),
+                dto.name(),
+                dto.description(),
+                dto.photoUrl(),
+                dto.stockQuantity()
         );
-
-        createProductUseCase.execute(input);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> update(@PathVariable UUID id,
-                                       @Valid @RequestBody UpdateProductRequest body) {
+                                       @Valid @RequestBody UpdateProductDTO dto) {
 
-        UpdateProductInputDTO input = new UpdateProductInputDTO(
+        updateProductUseCase.execute(
                 id.toString(),
-                body.price(),
-                body.name(),
-                body.description(),
-                body.photoUrl(),
-                body.stockQuantity()
+                dto.price(),
+                dto.name(),
+                dto.description(),
+                dto.photoUrl(),
+                dto.stockQuantity()
         );
-
-        updateProductUseCase.execute(input);
 
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
-        DeleteProductInputDTO input = new DeleteProductInputDTO(id.toString());
-
-        deleteProductUseCase.execute(input);
+        deleteProductUseCase.execute(id.toString());
 
         return ResponseEntity.ok().build();
     }

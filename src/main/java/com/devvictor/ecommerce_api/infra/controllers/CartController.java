@@ -1,16 +1,14 @@
 package com.devvictor.ecommerce_api.infra.controllers;
 
-import com.devvictor.ecommerce_api.application.dtos.input.AddProductToCartInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.ClearCartInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.FindCartByUserInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.input.SubtractProductFromCartInputDTO;
-import com.devvictor.ecommerce_api.application.dtos.output.CartOutputDTO;
 import com.devvictor.ecommerce_api.application.exceptions.InternalServerErrorException;
-import com.devvictor.ecommerce_api.application.use_cases.AddProductToCartUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.ClearCartUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.FindCartByUserUseCase;
-import com.devvictor.ecommerce_api.application.use_cases.SubtractProductFromCartUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.AddProductToCartUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.ClearCartUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.FindCartByUserUseCase;
+import com.devvictor.ecommerce_api.application.use_cases.carts.SubtractProductFromCartUseCase;
+import com.devvictor.ecommerce_api.domain.entities.Cart;
 import com.devvictor.ecommerce_api.domain.entities.User;
+import com.devvictor.ecommerce_api.infra.dtos.carts.CartDTO;
+import com.devvictor.ecommerce_api.infra.mappers.CartEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,31 +26,18 @@ public class CartController {
     private final ClearCartUseCase clearCartUseCase;
     private final AddProductToCartUseCase addProductToCartUseCase;
     private final SubtractProductFromCartUseCase subtractProductFromCartUseCase;
+    private final CartEntityMapper cartEntityMapper;
 
     @GetMapping("/my-cart")
-    public ResponseEntity<CartOutputDTO> findCartByUser() {
-        var user = (Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    public ResponseEntity<CartDTO> findCartByUser() {
+        Cart output = findCartByUserUseCase.execute(getAuthenticatedUser().getId());
 
-        if (user.isEmpty() ) {
-            throw new InternalServerErrorException();
-        }
-
-        var input = new FindCartByUserInputDTO(user.get().getId());
-
-        return ResponseEntity.ok(findCartByUserUseCase.execute(input));
+        return ResponseEntity.ok(cartEntityMapper.toDto(output));
     }
 
     @DeleteMapping("/my-cart")
     public ResponseEntity<Void> clearCart() {
-        var user = (Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (user.isEmpty()) {
-            throw new InternalServerErrorException();
-        }
-
-        var input = new ClearCartInputDTO(user.get().getId());
-
-        clearCartUseCase.execute(input);
+        clearCartUseCase.execute(getAuthenticatedUser().getId());
 
         return ResponseEntity.ok().build();
     }
@@ -61,19 +46,7 @@ public class CartController {
     public ResponseEntity<Void> addProductToCart(@PathVariable UUID productId,
                                                  @RequestParam int quantity) {
 
-        var user = (Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        if (user.isEmpty() ) {
-           throw new InternalServerErrorException();
-        }
-
-        var input = new AddProductToCartInputDTO(
-               user.get().getId(),
-               productId.toString(),
-               quantity
-        );
-
-        addProductToCartUseCase.execute(input);
+        addProductToCartUseCase.execute(productId.toString(), getAuthenticatedUser().getId(), quantity);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -82,20 +55,21 @@ public class CartController {
     public ResponseEntity<Void> subtractProduct(@PathVariable UUID productId,
                                                 @RequestParam int quantity) {
 
-        var user = (Optional<User>) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        subtractProductFromCartUseCase.execute(productId.toString(), getAuthenticatedUser().getId(), quantity);
 
-        if (user.isEmpty()) {
+        return ResponseEntity.ok().build();
+    }
+
+    private User getAuthenticatedUser() {
+        Optional<User> user = (Optional<User>) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        if (user.isEmpty() ) {
             throw new InternalServerErrorException();
         }
 
-        var input = new SubtractProductFromCartInputDTO(
-                user.get().getId(),
-                productId.toString(),
-                quantity
-        );
-
-        subtractProductFromCartUseCase.execute(input);
-
-        return ResponseEntity.ok().build();
+        return user.get();
     }
 }
