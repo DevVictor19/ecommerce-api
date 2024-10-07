@@ -27,6 +27,12 @@ public class EnvConfigProviderImpl implements EnvConfigProvider {
     @Value("${server.secret}")
     private String serverSecret;
 
+    @Value("${gateways.payment.url}")
+    private String paymentGatewayUrl;
+
+    @Value("${gateways.payment.key}")
+    private String paymentGatewayKey;
+
     @Override
     public String getDatabaseHost() {
         if (databaseHost == null) {
@@ -81,5 +87,21 @@ public class EnvConfigProviderImpl implements EnvConfigProvider {
             throw new RuntimeException("Server env variable secret is null");
         }
         return serverSecret;
+    }
+
+    @Override
+    public String getPaymentGatewayUrl() {
+        if (paymentGatewayUrl == null) {
+            throw new RuntimeException("Gateway payment env variable url is null");
+        }
+        return paymentGatewayUrl;
+    }
+
+    @Override
+    public String getPaymentGatewayKey() {
+        if (paymentGatewayKey == null) {
+            throw new RuntimeException("Gateway payment env variable key is null");
+        }
+        return paymentGatewayKey;
     }
 }

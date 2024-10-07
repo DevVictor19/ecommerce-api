@@ -15,3 +15,8 @@ database:
 server:
   url: ${SERVER_URL}
   secret: ${SERVER_SECRET}
+
+gateways:
+  payment:
+    url: ${PAYMENT_GW_URL}
+    key: ${PAYMENT_GW_KEY}
