@@ -8,8 +8,6 @@ services:
       - .env
     networks:
       - ecommerce-api
-    ports:
-      - 8080:8080
 
   db:
     image: mongo
