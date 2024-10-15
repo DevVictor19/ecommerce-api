@@ -1,27 +1,27 @@
-package com.devvictor.ecommerce_api.infra.gateways.asaas.dtos;
+package com.devvictor.ecommerce_api.infra.dtos.payments;
 
 import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.Length;
+import jakarta.validation.constraints.Size;
 
 public record CardDTO(
         @NotBlank
-        @Length(min = 3)
+        @Size(min = 3, max = 55)
         String holderName,
 
         @NotBlank
-        @Length(min = 16, max = 16)
+        @Size(min = 16, max = 16)
         String number,
 
         @NotBlank
-        @Length(min = 2, max = 2)
+        @Size(min = 2, max = 2)
         String expiryMonth,
 
         @NotBlank
-        @Length(min = 4, max = 4)
+        @Size(min = 4, max = 4)
         String expiryYear,
 
         @NotBlank
-        @Length(min = 3, max = 3)
+        @Size(min = 3, max = 3)
         String ccv
 ) {
 }

@@ -50,6 +50,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/orders/my-orders").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.DELETE, "/orders/my-orders/{orderId}").hasAuthority(Role.CLIENT.name())
 
+                        // payments
+                        .requestMatchers(HttpMethod.POST, "/payments/credit/orders/{orderId}").hasAnyAuthority(Role.CLIENT.name())
+
                         // any
                         .anyRequest().denyAll()
                 )

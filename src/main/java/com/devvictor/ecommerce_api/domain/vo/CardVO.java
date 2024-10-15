@@ -5,6 +5,6 @@ public record CardVO(
         String number,
         String expiryMonth,
         String expiryYear,
-        String cvv
+        String ccv
 ) {
 }

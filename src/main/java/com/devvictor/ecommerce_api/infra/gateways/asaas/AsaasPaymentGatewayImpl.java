@@ -68,22 +68,26 @@ public class AsaasPaymentGatewayImpl implements PaymentGateway {
     }
 
     @Override
-    public CompletableFuture<ChargeVO> createCreditCardCharge(String customerId, long value, int parcels, CardVO card) {
+    public CompletableFuture<ChargeVO> createCreditCardCharge(String customerId,
+                                                              String remoteIp,
+                                                              long value,
+                                                              int parcels,
+                                                              CardVO card) {
+
         double totalPrice = (double) value / 100;
+        double installmentValue =  totalPrice / parcels;
+
         LocalDate dueDate = LocalDate.now().plusMonths(1);
 
         CreateCreditCardChargeDTO requestDTO = new CreateCreditCardChargeDTO(
                 customerId,
+                remoteIp,
                 "CREDIT_CARD",
                 totalPrice,
-                dueDate,
+                dueDate.toString(),
                 parcels,
-                new CardDTO(card.holderName(),
-                        card.number(),
-                        card.expiryMonth(),
-                        card.expiryYear(),
-                        card.cvv()
-                )
+                installmentValue,
+                mapper.toCardDTO(card)
         );
 
         return webClient.post()
