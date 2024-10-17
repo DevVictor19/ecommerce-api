@@ -1,8 +1,10 @@
 package com.devvictor.ecommerce_api.application.use_cases.payments;
 
+import com.devvictor.ecommerce_api.application.exceptions.BadRequestException;
 import com.devvictor.ecommerce_api.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.application.gateways.PaymentGateway;
 import com.devvictor.ecommerce_api.application.services.OrderService;
+import com.devvictor.ecommerce_api.application.services.ProductService;
 import com.devvictor.ecommerce_api.domain.entities.Order;
 import com.devvictor.ecommerce_api.domain.entities.Payment;
 import com.devvictor.ecommerce_api.domain.entities.User;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class PayOrderWithCreditCardUseCase {
     private final PaymentGateway paymentGateway;
     private final OrderService orderService;
+    private final ProductService productService;
 
     public void execute(String orderId,
                         String remoteIp,
@@ -29,6 +32,17 @@ public class PayOrderWithCreditCardUseCase {
 
         Order order = orderService.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
+
+        if (order.getPayment() != null) {
+            throw new BadRequestException("This order already have a payment");
+        }
+
+        boolean isProductsAvailable = productService
+                .isProductsAvailable(order.getCart().getProducts());
+
+        if (!isProductsAvailable) {
+            throw new BadRequestException("Products not available");
+        }
 
         CustomerVO customer = paymentGateway.findCustomerIdByDocument(document).join()
                 .orElseGet(() -> paymentGateway.createCustomer(
