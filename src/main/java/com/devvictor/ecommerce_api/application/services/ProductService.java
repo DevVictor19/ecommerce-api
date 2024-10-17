@@ -1,5 +1,6 @@
 package com.devvictor.ecommerce_api.application.services;
 
+import com.devvictor.ecommerce_api.domain.entities.CartProduct;
 import com.devvictor.ecommerce_api.domain.entities.Product;
 import com.devvictor.ecommerce_api.domain.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -53,5 +56,25 @@ public class ProductService {
 
     public void delete(Product entity) {
         productRepository.delete(entity);
+    }
+
+    public boolean isProductsAvailable(List<CartProduct> products) {
+        List<CompletableFuture<Boolean>> futures = products
+                .stream()
+                .map((cartProduct) -> CompletableFuture.supplyAsync(() -> {
+                    Optional<Product> product = productRepository.findById(cartProduct.getId());
+
+                    return product
+                            .filter(value -> value.getStockQuantity() >= cartProduct.getInCartQuantity())
+                            .isPresent();
+
+                }))
+                .toList();
+
+        CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+
+        allFutures.join();
+
+        return futures.stream().allMatch(CompletableFuture::join);
     }
 }

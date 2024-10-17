@@ -8,4 +8,6 @@ public interface EnvConfigProvider {
     Integer getDatabasePort();
     String getServerUrl();
     String getServerSecret();
+    String getPaymentGatewayUrl();
+    String getPaymentGatewayKey();
 }

@@ -14,6 +14,7 @@ public class OrderFactory {
         entity.setUserId(userId);
         entity.setStatus(OrderStatus.WAITING_PAYMENT);
         entity.setCart(cart);
+        entity.setPayment(null);
         entity.setCreatedAt(new Date());
         return entity;
     }
@@ -24,6 +25,7 @@ public class OrderFactory {
         entity.setUserId(userId);
         entity.setStatus(status);
         entity.setCart(cart);
+        entity.setPayment(null);
         entity.setCreatedAt(new Date());
         return entity;
     }

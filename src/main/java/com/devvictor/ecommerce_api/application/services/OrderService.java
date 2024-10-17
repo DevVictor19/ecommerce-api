@@ -71,4 +71,8 @@ public class OrderService {
     public void delete(Order order) {
         orderRepository.delete(order);
     }
+
+    public void update(Order order) {
+        orderRepository.save(order);
+    }
 }
