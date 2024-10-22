@@ -26,6 +26,9 @@
 - Carts
 - Orders
 
+## Entity–relationship model
+<img src="./docs/erd-ecommerce-api.png" alt="ERD" />
+
 ## Features
 
 ### User
