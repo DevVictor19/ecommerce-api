@@ -18,7 +18,7 @@ public record ProductDTO(
         long price,
 
         @NotBlank
-        @Length(min = 4, max = 25)
+        @Length(min = 4, max = 100)
         String name,
 
         @NotBlank
