@@ -16,6 +16,8 @@ import com.devvictor.ecommerce_api.shared.domain.vo.CustomerVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
+
 @Component
 @RequiredArgsConstructor
 public class PayOrderWithCreditCardUseCase {
@@ -32,6 +34,10 @@ public class PayOrderWithCreditCardUseCase {
 
         Order order = orderService.findById(orderId)
                 .orElseThrow(() -> new NotFoundException("Order not found"));
+
+        if (!Objects.equals(order.getUserId(), user.getId())) {
+            throw new BadRequestException("User don't owns this order");
+        }
 
         if (order.getPayment() != null) {
             throw new BadRequestException("This order already have a payment");
