@@ -5,7 +5,11 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.devvictor.ecommerce_api.shared.application.providers.EnvConfigProvider;
+import com.devvictor.ecommerce_api.user.application.jwt.JwtPayload;
 import com.devvictor.ecommerce_api.user.application.providers.JwtProvider;
+import com.devvictor.ecommerce_api.user.domain.entities.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -14,6 +18,7 @@ import java.time.ZoneOffset;
 
 @Component
 public class JwtProviderImpl implements JwtProvider {
+    private final ObjectMapper objectMapper = new ObjectMapper();
     private final Algorithm algorithm;
     private final String issuerUrl;
 
@@ -23,31 +28,39 @@ public class JwtProviderImpl implements JwtProvider {
     }
 
     @Override
-    public String generateToken(String userId) {
+    public String generateToken(User user) {
         // 8 hours
         final Instant expiration = LocalDateTime
                 .now().plusHours(8)
                 .toInstant(ZoneOffset.of("-03:00"));
 
         try {
+            String payload = objectMapper.writeValueAsString(
+                    new JwtPayload(user.getId(), user.getRoles())
+            );
+
             return JWT.create()
                     .withIssuer(issuerUrl)
-                    .withSubject(userId)
+                    .withPayload(payload)
                     .withExpiresAt(expiration)
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Error while generating token");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while parsing jwt payload");
         }
     }
 
     @Override
-    public String validateToken(String token) {
+    public JwtPayload validateToken(String token) {
         try {
-            return JWT.require(algorithm)
+            String payload = JWT.require(algorithm)
                     .withIssuer(issuerUrl)
                     .build()
                     .verify(token)
-                    .getSubject();
+                    .getPayload();
+
+            return objectMapper.convertValue(payload, JwtPayload.class);
         } catch (JWTVerificationException exception){
             throw new RuntimeException("Error while validating token");
         }

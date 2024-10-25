@@ -30,6 +30,6 @@ public class LoginUserUseCase {
             throw new UnauthorizedException("Invalid email or password");
         }
 
-        return jwtProvider.generateToken(existingUser.get().getId());
+        return jwtProvider.generateToken(existingUser.get());
     }
 }

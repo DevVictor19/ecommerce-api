@@ -1,6 +1,7 @@
 package com.devvictor.ecommerce_api.shared.infra.security;
 
 import com.devvictor.ecommerce_api.shared.application.exceptions.UnauthorizedException;
+import com.devvictor.ecommerce_api.user.application.jwt.JwtPayload;
 import com.devvictor.ecommerce_api.user.application.providers.JwtProvider;
 import com.devvictor.ecommerce_api.user.domain.entities.User;
 import com.devvictor.ecommerce_api.user.domain.repositories.UserRepository;
@@ -36,9 +37,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Optional<String> token = extractJwtToken(request);
 
         if (token.isPresent()) {
-            String userId = jwtProvider.validateToken(token.get());
+            JwtPayload jwtPayload = jwtProvider.validateToken(token.get());
 
-            Optional<User> user = userRepository.findById(userId);
+            Optional<User> user = userRepository.findById(jwtPayload.userId());
 
             if (user.isEmpty()) {
                 throw new UnauthorizedException();
