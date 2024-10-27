@@ -39,7 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (token.isPresent()) {
             JwtPayload jwtPayload = jwtProvider.validateToken(token.get());
 
-            Optional<User> user = userRepository.findById(jwtPayload.userId());
+            Optional<User> user = userRepository.findById(jwtPayload.getUserId());
 
             if (user.isEmpty()) {
                 throw new UnauthorizedException();

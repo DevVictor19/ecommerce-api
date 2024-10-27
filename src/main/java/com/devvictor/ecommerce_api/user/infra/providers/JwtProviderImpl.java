@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Base64;
 
 @Component
 public class JwtProviderImpl implements JwtProvider {
@@ -60,9 +61,13 @@ public class JwtProviderImpl implements JwtProvider {
                     .verify(token)
                     .getPayload();
 
-            return objectMapper.convertValue(payload, JwtPayload.class);
+            String decodedPayload = new String(Base64.getUrlDecoder().decode(payload));
+
+            return objectMapper.readValue(decodedPayload, JwtPayload.class);
         } catch (JWTVerificationException exception){
             throw new RuntimeException("Error while validating token");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 }
