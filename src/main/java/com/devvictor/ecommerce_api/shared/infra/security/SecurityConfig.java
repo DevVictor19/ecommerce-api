@@ -39,6 +39,7 @@ public class SecurityConfig {
 
                         // products
                         .requestMatchers(HttpMethod.GET, "/products").hasAuthority(Role.CLIENT.name())
+                        .requestMatchers(HttpMethod.GET, "/products/{id}").hasAuthority(Role.CLIENT.name())
                         .requestMatchers(HttpMethod.POST, "/products").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.DELETE, "/products/{id}").hasAuthority(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.PUT, "/products/{id}").hasAuthority(Role.ADMIN.name())
