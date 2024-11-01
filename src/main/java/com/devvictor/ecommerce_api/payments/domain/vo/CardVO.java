@@ -1,4 +1,4 @@
-package com.devvictor.ecommerce_api.shared.domain.vo;
+package com.devvictor.ecommerce_api.payments.domain.vo;
 
 public record CardVO(
         String holderName,

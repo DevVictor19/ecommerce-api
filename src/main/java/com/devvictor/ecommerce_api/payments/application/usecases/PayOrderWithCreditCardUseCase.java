@@ -10,9 +10,9 @@ import com.devvictor.ecommerce_api.payments.domain.entities.Payment;
 import com.devvictor.ecommerce_api.user.domain.entities.User;
 import com.devvictor.ecommerce_api.orders.domain.enums.OrderStatus;
 import com.devvictor.ecommerce_api.payments.domain.factories.PaymentFactory;
-import com.devvictor.ecommerce_api.shared.domain.vo.CardVO;
-import com.devvictor.ecommerce_api.shared.domain.vo.ChargeVO;
-import com.devvictor.ecommerce_api.shared.domain.vo.CustomerVO;
+import com.devvictor.ecommerce_api.payments.domain.vo.CardVO;
+import com.devvictor.ecommerce_api.payments.domain.vo.ChargeVO;
+import com.devvictor.ecommerce_api.payments.domain.vo.CustomerVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

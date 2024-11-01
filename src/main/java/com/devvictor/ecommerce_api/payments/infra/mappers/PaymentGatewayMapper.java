@@ -1,8 +1,8 @@
 package com.devvictor.ecommerce_api.payments.infra.mappers;
 
-import com.devvictor.ecommerce_api.shared.domain.vo.CardVO;
-import com.devvictor.ecommerce_api.shared.domain.vo.ChargeVO;
-import com.devvictor.ecommerce_api.shared.domain.vo.CustomerVO;
+import com.devvictor.ecommerce_api.payments.domain.vo.CardVO;
+import com.devvictor.ecommerce_api.payments.domain.vo.ChargeVO;
+import com.devvictor.ecommerce_api.payments.domain.vo.CustomerVO;
 import com.devvictor.ecommerce_api.payments.infra.gateways.asaas.dtos.CardDTO;
 import com.devvictor.ecommerce_api.payments.infra.gateways.asaas.dtos.ChargeDTO;
 import com.devvictor.ecommerce_api.payments.infra.gateways.asaas.dtos.CustomerDTO;
