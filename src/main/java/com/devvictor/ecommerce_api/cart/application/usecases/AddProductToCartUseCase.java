@@ -1,6 +1,7 @@
 package com.devvictor.ecommerce_api.cart.application.usecases;
 
 import com.devvictor.ecommerce_api.shared.application.exceptions.BadRequestException;
+import com.devvictor.ecommerce_api.shared.application.exceptions.InternalServerErrorException;
 import com.devvictor.ecommerce_api.shared.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.cart.application.services.CartService;
 import com.devvictor.ecommerce_api.products.application.services.ProductService;
@@ -24,10 +25,6 @@ public class AddProductToCartUseCase {
         Product product = productService.findById(productId)
                 .orElseThrow(() -> new NotFoundException("Product not found"));
 
-        if (product.getStockQuantity() < quantity) {
-            throw new BadRequestException("Insufficient quantity of product in stock");
-        }
-
         Optional<Cart> userCart = cartService.findByUserId(userId);
 
         CartProduct cartProduct = CartProductFactory.create(
@@ -39,16 +36,28 @@ public class AddProductToCartUseCase {
                 quantity
         );
 
-        if (userCart.isEmpty()) {
+        if (userCart.isPresent()) {
+            userCart.get().addProduct(cartProduct);
+
+            checkCartProductStockAvailability(userCart.get(), product);
+
+            cartService.update(userCart.get());
+        } else {
             Cart newCart = CartFactory.create(userId);
             newCart.addProduct(cartProduct);
 
+            checkCartProductStockAvailability(newCart, product);
+
             cartService.create(newCart);
-
-            return;
         }
+    }
 
-        userCart.get().addProduct(cartProduct);
-        cartService.update(userCart.get());
+    private void checkCartProductStockAvailability(Cart cart, Product stockProduct) {
+        CartProduct cartProduct = cart.findProductById(stockProduct.getId())
+                .orElseThrow(() -> new InternalServerErrorException("Product not present in cart"));
+
+        if (cartProduct.getInCartQuantity() > stockProduct.getStockQuantity()) {
+            throw new BadRequestException("Insufficient quantity of product in stock to add");
+        }
     }
 }
