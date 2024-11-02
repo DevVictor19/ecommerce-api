@@ -38,6 +38,12 @@ public class Cart {
     @Field(name = "created_at", targetType = FieldType.DATE_TIME)
     private Date createdAt;
 
+    public Optional<CartProduct> findProductById(String productId) {
+        return products.stream()
+                .filter(p -> p.getId().equals(productId))
+                .findFirst();
+    }
+
     public void addProduct(CartProduct product) {
        Optional<CartProduct> existentProduct = products.stream()
                .filter(p -> p.getId().equals(product.getId()))
