@@ -3,6 +3,7 @@ package com.devvictor.ecommerce_api.products.application.services;
 import com.devvictor.ecommerce_api.cart.domain.entities.CartProduct;
 import com.devvictor.ecommerce_api.products.domain.entities.Product;
 import com.devvictor.ecommerce_api.products.domain.repositories.ProductRepository;
+import com.devvictor.ecommerce_api.shared.application.exceptions.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -76,5 +77,24 @@ public class ProductService {
         allFutures.join();
 
         return futures.stream().allMatch(CompletableFuture::join);
+    }
+
+    public void subtractProductsFromStock(List<CartProduct> products) {
+       List<CompletableFuture<Void>> futures = products
+               .stream()
+               .map(cartProduct -> CompletableFuture.runAsync(() -> {
+                   Product product = productRepository.findById(cartProduct.getId())
+                           .orElseThrow(() -> new NotFoundException("Product not found"));
+
+                   int updatedStockQuantity = product.getStockQuantity() - cartProduct.getInCartQuantity();
+                   product.setStockQuantity(updatedStockQuantity);
+
+                   productRepository.save(product);
+               }))
+               .toList();
+
+       CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+
+       allFutures.join();
     }
 }
