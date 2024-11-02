@@ -75,5 +75,7 @@ public class PayOrderWithCreditCardUseCase {
         order.setStatus(OrderStatus.PAID);
 
         orderService.update(order);
+
+        productService.subtractProductsFromStock(order.getCart().getProducts());
     }
 }
