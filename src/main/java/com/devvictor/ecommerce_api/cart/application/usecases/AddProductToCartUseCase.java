@@ -1,5 +1,6 @@
 package com.devvictor.ecommerce_api.cart.application.usecases;
 
+import com.devvictor.ecommerce_api.shared.application.exceptions.BadRequestException;
 import com.devvictor.ecommerce_api.shared.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.cart.application.services.CartService;
 import com.devvictor.ecommerce_api.products.application.services.ProductService;
@@ -20,20 +21,21 @@ public class AddProductToCartUseCase {
     private final ProductService productService;
 
     public void execute(String productId, String userId, int quantity) {
-        Optional<Product> product = productService.findById(productId);
+        Product product = productService.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Product not found"));
 
-        if (product.isEmpty()) {
-            throw new NotFoundException("Product not found");
+        if (product.getStockQuantity() < quantity) {
+            throw new BadRequestException("Insufficient quantity of product in stock");
         }
 
         Optional<Cart> userCart = cartService.findByUserId(userId);
 
         CartProduct cartProduct = CartProductFactory.create(
-                product.get().getId(),
-                product.get().getPrice(),
-                product.get().getName(),
-                product.get().getDescription(),
-                product.get().getPhotoUrl(),
+                product.getId(),
+                product.getPrice(),
+                product.getName(),
+                product.getDescription(),
+                product.getPhotoUrl(),
                 quantity
         );
 
