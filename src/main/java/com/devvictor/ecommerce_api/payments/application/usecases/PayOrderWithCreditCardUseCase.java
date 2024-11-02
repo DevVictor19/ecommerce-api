@@ -1,18 +1,17 @@
 package com.devvictor.ecommerce_api.payments.application.usecases;
 
-import com.devvictor.ecommerce_api.shared.application.exceptions.BadRequestException;
-import com.devvictor.ecommerce_api.shared.application.exceptions.NotFoundException;
-import com.devvictor.ecommerce_api.payments.application.gateways.PaymentGateway;
 import com.devvictor.ecommerce_api.orders.application.services.OrderService;
-import com.devvictor.ecommerce_api.products.application.services.ProductService;
 import com.devvictor.ecommerce_api.orders.domain.entities.Order;
-import com.devvictor.ecommerce_api.payments.domain.entities.Payment;
-import com.devvictor.ecommerce_api.user.domain.entities.User;
 import com.devvictor.ecommerce_api.orders.domain.enums.OrderStatus;
+import com.devvictor.ecommerce_api.payments.application.gateways.PaymentGateway;
+import com.devvictor.ecommerce_api.payments.domain.entities.Payment;
 import com.devvictor.ecommerce_api.payments.domain.factories.PaymentFactory;
 import com.devvictor.ecommerce_api.payments.domain.vo.CardVO;
 import com.devvictor.ecommerce_api.payments.domain.vo.ChargeVO;
 import com.devvictor.ecommerce_api.payments.domain.vo.CustomerVO;
+import com.devvictor.ecommerce_api.shared.application.exceptions.BadRequestException;
+import com.devvictor.ecommerce_api.shared.application.exceptions.NotFoundException;
+import com.devvictor.ecommerce_api.user.domain.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +22,6 @@ import java.util.Objects;
 public class PayOrderWithCreditCardUseCase {
     private final PaymentGateway paymentGateway;
     private final OrderService orderService;
-    private final ProductService productService;
 
     public void execute(String orderId,
                         String remoteIp,
@@ -41,13 +39,6 @@ public class PayOrderWithCreditCardUseCase {
 
         if (order.getPayment() != null) {
             throw new BadRequestException("This order already have a payment");
-        }
-
-        boolean isProductsAvailable = productService
-                .isProductsAvailable(order.getCart().getProducts());
-
-        if (!isProductsAvailable) {
-            throw new BadRequestException("Products not available");
         }
 
         CustomerVO customer = paymentGateway.findCustomerIdByDocument(document).join()
@@ -75,7 +66,5 @@ public class PayOrderWithCreditCardUseCase {
         order.setStatus(OrderStatus.PAID);
 
         orderService.update(order);
-
-        productService.subtractProductsFromStock(order.getCart().getProducts());
     }
 }
