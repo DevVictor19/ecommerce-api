@@ -22,7 +22,7 @@ public class CreateOrderUseCase {
     private final OrderService orderService;
     private final ProductService productService;
 
-    public void execute(String userId) {
+    public Order execute(String userId) {
         Cart cart = cartService.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("Cart not found"));
 
@@ -43,7 +43,8 @@ public class CreateOrderUseCase {
 
         Order order = OrderFactory.create(userId, orderCart);
         orderService.create(order);
-
         cartService.delete(cart);
+
+        return order;
     }
 }
