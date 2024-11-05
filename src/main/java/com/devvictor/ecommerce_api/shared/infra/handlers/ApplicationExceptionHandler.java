@@ -4,6 +4,7 @@ import com.devvictor.ecommerce_api.shared.application.exceptions.BadRequestExcep
 import com.devvictor.ecommerce_api.shared.application.exceptions.InternalServerErrorException;
 import com.devvictor.ecommerce_api.shared.application.exceptions.NotFoundException;
 import com.devvictor.ecommerce_api.shared.application.exceptions.UnauthorizedException;
+import com.devvictor.ecommerce_api.shared.domain.exceptions.InvalidEntityOperationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -85,5 +86,19 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         );
 
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(InvalidEntityOperationException.class)
+    public final ResponseEntity<ExceptionResponse> handleInvalidEntityOperation(
+            InvalidEntityOperationException ex,
+            WebRequest request
+    ) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
 }
