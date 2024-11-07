@@ -1,9 +1,6 @@
 package com.devvictor.ecommerce_api.orders.infra.controllers;
 
-import com.devvictor.ecommerce_api.orders.application.usecases.CancelOrderUseCase;
-import com.devvictor.ecommerce_api.orders.application.usecases.CreateOrderUseCase;
-import com.devvictor.ecommerce_api.orders.application.usecases.FindAllOrdersUseCase;
-import com.devvictor.ecommerce_api.orders.application.usecases.FindAllUserOrdersUseCase;
+import com.devvictor.ecommerce_api.orders.application.usecases.*;
 import com.devvictor.ecommerce_api.orders.domain.enums.OrderStatus;
 import com.devvictor.ecommerce_api.orders.infra.dtos.OrderDTO;
 import com.devvictor.ecommerce_api.orders.infra.mappers.OrderEntityMapper;
@@ -24,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderController {
     private final FindAllOrdersUseCase findAllOrdersUseCase;
+    private final FindOrderByIdUseCase findOrderByIdUseCase;
     private final FindAllUserOrdersUseCase findAllUserOrdersUseCase;
     private final CreateOrderUseCase createOrderUseCase;
     private final CancelOrderUseCase cancelOrderUseCase;
@@ -40,6 +38,11 @@ public class OrderController {
                 .execute(page, size, sort, sortBy, status)
                 .map(orderEntityMapper::toDto)
         );
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> findOrderById(@PathVariable UUID orderId) {
+        return ResponseEntity.ok(orderEntityMapper.toDto(findOrderByIdUseCase.execute(orderId.toString())));
     }
 
     @GetMapping("/my-orders")
