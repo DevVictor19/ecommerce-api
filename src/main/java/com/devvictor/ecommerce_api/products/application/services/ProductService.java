@@ -58,21 +58,24 @@ public class ProductService {
         productRepository.delete(entity);
     }
 
-    public CompletableFuture<Void> addProductsToStock(List<CartProduct> products) {
-        List<CompletableFuture<Void>> futures = products
+    public CompletableFuture<Boolean> isProductsAvailable(List<CartProduct> products) {
+        List<CompletableFuture<Boolean>> futures = products
                 .stream()
-                .map(cartProduct -> CompletableFuture.runAsync(() -> {
-                    Product product = productRepository.findById(cartProduct.getId())
-                            .orElseThrow(() -> new RuntimeException("Product not found"));
+                .map((cartProduct) -> CompletableFuture.supplyAsync(() -> {
+                    Optional<Product> product = productRepository.findById(cartProduct.getId());
 
-                    int sum = product.getStockQuantity() + cartProduct.getInCartQuantity();
-                    product.setStockQuantity(sum);
+                    return product
+                            .filter(value -> value.getStockQuantity() >= cartProduct.getInCartQuantity())
+                            .isPresent();
 
-                    productRepository.save(product);
                 }))
                 .toList();
 
-        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+
+        allFutures.join();
+
+        return CompletableFuture.supplyAsync(() -> futures.stream().allMatch(CompletableFuture::join));
     }
 
     public CompletableFuture<Void> subtractProductsFromStock(List<CartProduct> products) {
