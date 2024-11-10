@@ -2,10 +2,10 @@ FROM maven:3.9.9-eclipse-temurin-21 AS builder
 
 WORKDIR /app
 
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
-COPY src src
+COPY mvnw ./mvnw
+COPY .mvn ./.mvn
+COPY pom.xml ./pom.xml
+COPY src ./src
 
 RUN ./mvnw install -DskipTests
 

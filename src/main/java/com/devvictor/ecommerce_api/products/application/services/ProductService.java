@@ -58,23 +58,41 @@ public class ProductService {
         productRepository.delete(entity);
     }
 
-    public boolean isProductsAvailable(List<CartProduct> products) {
-        List<CompletableFuture<Boolean>> futures = products
+    public CompletableFuture<Void> addProductsToStock(List<CartProduct> products) {
+        List<CompletableFuture<Void>> futures = products
                 .stream()
-                .map((cartProduct) -> CompletableFuture.supplyAsync(() -> {
-                    Optional<Product> product = productRepository.findById(cartProduct.getId());
+                .map(cartProduct -> CompletableFuture.runAsync(() -> {
+                    Product product = productRepository.findById(cartProduct.getId())
+                            .orElseThrow(() -> new RuntimeException("Product not found"));
 
-                    return product
-                            .filter(value -> value.getStockQuantity() >= cartProduct.getInCartQuantity())
-                            .isPresent();
+                    int sum = product.getStockQuantity() + cartProduct.getInCartQuantity();
+                    product.setStockQuantity(sum);
 
+                    productRepository.save(product);
                 }))
                 .toList();
 
-        CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+    }
 
-        allFutures.join();
+    public CompletableFuture<Void> subtractProductsFromStock(List<CartProduct> products) {
+       List<CompletableFuture<Void>> futures = products
+               .stream()
+               .map(cartProduct -> CompletableFuture.runAsync(() -> {
+                   Product product = productRepository.findById(cartProduct.getId())
+                           .orElseThrow(() -> new RuntimeException("Product not found"));
 
-        return futures.stream().allMatch(CompletableFuture::join);
+                   if (product.getStockQuantity() < cartProduct.getInCartQuantity()) {
+                       throw new RuntimeException("Insufficient quantity of product in stock");
+                   }
+
+                   int updatedStockQuantity = product.getStockQuantity() - cartProduct.getInCartQuantity();
+                   product.setStockQuantity(updatedStockQuantity);
+
+                   productRepository.save(product);
+               }))
+               .toList();
+
+       return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
     }
 }

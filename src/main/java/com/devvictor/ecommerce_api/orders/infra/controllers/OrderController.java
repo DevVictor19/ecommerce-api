@@ -1,14 +1,11 @@
 package com.devvictor.ecommerce_api.orders.infra.controllers;
 
-import com.devvictor.ecommerce_api.shared.application.exceptions.InternalServerErrorException;
-import com.devvictor.ecommerce_api.orders.application.usecases.CancelOrderUseCase;
-import com.devvictor.ecommerce_api.orders.application.usecases.CreateOrderUseCase;
-import com.devvictor.ecommerce_api.orders.application.usecases.FindAllOrdersUseCase;
-import com.devvictor.ecommerce_api.orders.application.usecases.FindAllUserOrdersUseCase;
-import com.devvictor.ecommerce_api.user.domain.entities.User;
+import com.devvictor.ecommerce_api.orders.application.usecases.*;
 import com.devvictor.ecommerce_api.orders.domain.enums.OrderStatus;
 import com.devvictor.ecommerce_api.orders.infra.dtos.OrderDTO;
 import com.devvictor.ecommerce_api.orders.infra.mappers.OrderEntityMapper;
+import com.devvictor.ecommerce_api.shared.application.exceptions.InternalServerErrorException;
+import com.devvictor.ecommerce_api.user.domain.entities.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -24,6 +21,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderController {
     private final FindAllOrdersUseCase findAllOrdersUseCase;
+    private final FindOrderByIdUseCase findOrderByIdUseCase;
     private final FindAllUserOrdersUseCase findAllUserOrdersUseCase;
     private final CreateOrderUseCase createOrderUseCase;
     private final CancelOrderUseCase cancelOrderUseCase;
@@ -42,6 +40,11 @@ public class OrderController {
         );
     }
 
+    @GetMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> findOrderById(@PathVariable UUID orderId) {
+        return ResponseEntity.ok(orderEntityMapper.toDto(findOrderByIdUseCase.execute(orderId.toString())));
+    }
+
     @GetMapping("/my-orders")
     public ResponseEntity<Page<OrderDTO>> findAllUserOrders(@RequestParam(defaultValue = "0") int page,
                                                             @RequestParam(defaultValue = "10") int size,
@@ -56,10 +59,11 @@ public class OrderController {
     }
 
     @PostMapping("/my-orders")
-    public ResponseEntity<Void> createOrder() {
-        createOrderUseCase.execute(getAuthenticatedUser().getId());
+    public ResponseEntity<OrderDTO> createOrder() {
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(orderEntityMapper.toDto(createOrderUseCase.execute(getAuthenticatedUser().getId())));
     }
 
     @DeleteMapping("/my-orders/{orderId}")

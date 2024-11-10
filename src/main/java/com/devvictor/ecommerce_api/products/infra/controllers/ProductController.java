@@ -1,9 +1,7 @@
 package com.devvictor.ecommerce_api.products.infra.controllers;
 
-import com.devvictor.ecommerce_api.products.application.usecases.CreateProductUseCase;
-import com.devvictor.ecommerce_api.products.application.usecases.DeleteProductUseCase;
-import com.devvictor.ecommerce_api.products.application.usecases.FindAllProductsUseCase;
-import com.devvictor.ecommerce_api.products.application.usecases.UpdateProductUseCase;
+import com.devvictor.ecommerce_api.products.application.usecases.*;
+import com.devvictor.ecommerce_api.products.domain.entities.Product;
 import com.devvictor.ecommerce_api.products.infra.dtos.CreateProductDTO;
 import com.devvictor.ecommerce_api.products.infra.dtos.ProductDTO;
 import com.devvictor.ecommerce_api.products.infra.dtos.UpdateProductDTO;
@@ -22,6 +20,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProductController {
     private final FindAllProductsUseCase findAllProductsUseCase;
+    private final FindProductByIdUseCase findProductByIdUseCase;
     private final CreateProductUseCase createProductUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
     private final UpdateProductUseCase updateProductUseCase;
@@ -39,6 +38,13 @@ public class ProductController {
                 .execute(page, size, sort, sortBy, name)
                 .map(productEntityMapper::toDto)
         );
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> findById(@PathVariable UUID id) {
+        Product product = findProductByIdUseCase.execute(id.toString());
+
+        return ResponseEntity.ok(productEntityMapper.toDto(product));
     }
 
     @PostMapping

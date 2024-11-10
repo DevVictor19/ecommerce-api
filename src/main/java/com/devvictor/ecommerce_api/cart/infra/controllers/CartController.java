@@ -30,9 +30,13 @@ public class CartController {
 
     @GetMapping("/my-cart")
     public ResponseEntity<CartDTO> findCartByUser() {
-        Cart output = findCartByUserUseCase.execute(getAuthenticatedUser().getId());
+        Optional<Cart> output = findCartByUserUseCase.execute(getAuthenticatedUser().getId());
 
-        return ResponseEntity.ok(cartEntityMapper.toDto(output));
+        if (output.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.ok(cartEntityMapper.toDto(output.get()));
     }
 
     @DeleteMapping("/my-cart")
